@@ -15,4 +15,8 @@ class Detail_Print extends Model
     public function Jenis_printing(){
     	return $this->belongsTo('App\Jenis_printing', 'jenis_printing_id');
     }
+
+    public function Layanan_tersedia(){
+    	return $this->hasMany('App\Layanan_tersedia');
+    }
 }

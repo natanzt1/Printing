@@ -13,10 +13,10 @@ class LayananTersedia extends Migration
      */
     public function up()
     {
-        Schema::create('layanan_tersedia', function (Blueprint $table) {
+        Schema::create('layanan_tersedias', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('printing_id');
-            $table->integer('detail_print_id');
+            $table->integer('detail__print_id');
             $table->timestamps();
         });
     }

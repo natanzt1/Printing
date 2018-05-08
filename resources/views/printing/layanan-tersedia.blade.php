@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Set Detail Print</title>
+	<title>Layanan Tersedia</title>
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 	<div class="container" style="width: 75%">
+		<h4>{{$printing->nama}}</h4>
 		<table class="table">
 		  <thead class="thead-dark">
 		    <tr>
 		      <th scope="col">No</th>
-		      <th scope="col">Printing</th>
-		      <th scope="col">Jenis</th>
-		      <th scope="col">Ukuran</th>
+		      <th scope="col">Jenis Printing</th>
 		    </tr>
 		  </thead>
 		  <tbody>
-		  	@foreach($printings as $i=>$printing)
+		  	@foreach($jeniss_p as $i=>$jenis_p)
 		    <tr>
 		      <th scope="row">{{$i+1}}</th>
-		      <td>{{$printing->jenis_printing->nama}}</td>
-		      <td>{{$printing->jenis_kertas->nama}}</td>
-		      <td>{{$printing->ukuran_kertas->nama}}</td>
+		      <!--<td>{{$jeniss_p_id}}</td> Id nya nanti taruh di button edit dll-->
+		      <td>{{$jenis_p}}</td>
 		    </tr>
 		    @endforeach
 		  </tbody>

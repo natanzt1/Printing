@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Printing;
+use App\Layanan_tersedia;
+use App\Detail_print;
 use Illuminate\Http\Request;
 
 class PrintingController extends Controller
@@ -167,5 +169,32 @@ class PrintingController extends Controller
     public function destroy(Printing $printing)
     {
         //
+    }
+
+    /**
+     * Edit Layanan Si Printing
+     *
+     */
+    public function layananTersedia($id)
+    {
+        $printing = Printing::find($id);
+        $layanans = Layanan_Tersedia::where('printing_id', $id)->get();
+        foreach($layanans as $i=>$layanan){
+            $id_detail = $layanan->detail__print_id;
+            $jenis = Detail_print::find($id_detail);
+            $jenis_prints[$i] = $jenis->jenis_printing->nama;
+            $jenis_prints_id[$i] = $jenis->jenis_printing_id;
+        }
+        $c = 0; //Counter utk menghitung jumlah layanan tersedia.
+        $jeniss_p[0] = $jenis_prints[0];
+        $jeniss_p_id[0] = $jenis_prints_id[0];
+        for($a=1;$a<=$i;$a++){
+            if($jeniss_p[$c] != $jenis_prints[$a]){
+                $c++;
+                $jeniss_p[$c] = $jenis_prints[$a];
+                $jeniss_p_id[$c] = $jenis_prints_id[$a];
+            }
+        }
+        return view('printing/layanan-tersedia', compact('printing', 'jeniss_p', 'jeniss_p_id'));
     }
 }
