@@ -13,7 +13,7 @@ class DetailPrint extends Migration
      */
     public function up()
     {
-        Schema::create('detail_prints', function (Blueprint $table) {
+        Schema::create('detail__prints', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('jenis_kertas_id');
             $table->integer('ukuran_kertas_id');
