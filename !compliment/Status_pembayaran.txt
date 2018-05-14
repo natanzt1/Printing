@@ -1,0 +1,4 @@
+Status Pembayaran
+
+0 = Belum Dibayar
+1 = Sudah Dibayar

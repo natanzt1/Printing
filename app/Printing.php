@@ -29,4 +29,8 @@ class Printing extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function Favorite(){
+        return $this->hasMany('App\Favorite');
+    }
 }

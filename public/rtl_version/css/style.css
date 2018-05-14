@@ -327,7 +327,31 @@ a.btn_full_outline{
 	font-size: inherit;
 	color:#85c99d;
 	background:none;
-	border:2px solid #85c99d;
+	border:2px solid #e04f67;
+	cursor: pointer;
+	padding: 10px 20px;
+	display: inline-block;
+	outline: none;
+	font-size:12px;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-transform:uppercase;
+	font-weight:bold;
+	display:block;
+	text-align:center;
+}
+
+a.btn_full_outline_2{
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color:#e04f67;
+	background:none;
+	border:2px solid #e04f67;
 	cursor: pointer;
 	padding: 10px 20px;
 	display: inline-block;

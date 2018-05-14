@@ -1,0 +1,22 @@
+<script>
+    var i = 0;
+    /*Cara menggunakan Variable PHP di JS {!! $var !!}*/
+    function more(){
+        var name = "transaksi"+i;
+        var add = document.createElement("select");
+        add.setAttribute("name", name);
+        add.setAttribute("class", "form-control")
+
+        //opt untuk membuat tag option
+        var opt = document.createElement("option");
+        opt.setAttribute("value", "volvocar");
+
+        //opt_text untuk mengatur Text Node dari Option
+        var opt_text = document.createTextNode("Volvo"+i);
+        z.appendChild(opt_text);
+        var more = document.getElementById("more");
+        more.appendChild(add);
+        $("#counter").val(i);
+        i++;
+    };
+</script>

@@ -1,6 +1,5 @@
 @extends('header')
 
-
 @section('content')
 	<main>
 		<div id="position">
@@ -25,32 +24,128 @@
 			</div>
 			<hr>
 			<div class="row">
-				<div class="col-md-4 col-sm-6">
-					<img src="{{ URL::asset('img/tour_box_1.jpg') }}" alt="Image" class="img-responsive styled">
-				</div>
-				<div class="col-md-7 col-md-offset-1 col-sm-6">
-                    <h3>Deskripsi</h3>
-                    <h6><span>{{$printing->deskripsi}}</span></h6>
-					<h3>Alamat : <span>{{$printing->alamat}}</span></h3>
-					<h4>Kota : <span>{{$printing->kabupaten}}</span></h4>
+				<div class="col-md-12 col-sm-6">
+                    <ul class="nav nav-tabs font-14pt">
+                        <li class="active"><a data-toggle="tab" href="#detail">Detail</a></li>
+                        <li><a data-toggle="tab" href="#layanan">Layanan dan Harga</a></li>
+                    </ul>
 
-					<div class="general_icons">
-						<ul>
-							<li><i class="icon_set_1_icon-34"></i>Camera</li>
-							<li><i class="icon_set_1_icon-31"></i>Video camera</li>
-							<li><i class="icon_set_1_icon-35"></i>Credit cards</li>
-							<li><i class="icon_set_1_icon-63"></i>Mobile</li>
-							<li><i class="icon_set_1_icon-33"></i>Travel bag</li>
-							<li><i class="icon_set_1_icon-9"></i>Snack</li>
-							<li><i class="icon_set_1_icon-37"></i>Map</li>
-						</ul>
-					</div>
-				</div>
+                    <div class="tab-content">
+                        <div id="detail" class="tab-pane fade in active">
+                            <div class="row">
+                                
+                            <div class="col-md-4 col-sm-4">
+                                <img src="{{ URL::asset('img/tour_box_1.jpg') }}" alt="Image" class="img-responsive styled">
+                            </div>
+                            <div class="col-md-5 col-sm-5" style="word-wrap:break-word">
+                                <h4>Deskripsi</h4>
+                                <h5><span>{{$printing->deskripsi}}</span></h5><br>
+                                <h4>Alamat : <span>{{$printing->alamat}}</span></h4>
+                                <h4>Kota : <span>{{$printing->kabupaten}}</span></h4>
+                                <h4>Rating :                        
+                                    <span class="rating">
+                                        @for($star=0 ; $star< 5; $star++ )
+                                            @if($star<($printing->rating))
+                                                <i class="icon-star voted"></i>
+                                            @else
+                                                <i class=" icon-star-empty"></i>
+                                            @endif
+                                        @endfor
+                                    </span> 
+                                    ({{$printing->rating}} of 5)
+                                </h4>
+                                <hr>
+                            </div>
+                            @guest
+                            <div class="col-md-3 col-sm-3">
+                                <h5>Ingin Menambahkan Printing ini ke 
+                                    <br><span>Daftar Favoritemu? Yuk login dulu 
+                                    <i class="icon-smile voted"></i></span>
+                                </h5>
+                            </div>
+                            @endguest
+                            @auth('web')
+                            <div class="col-md-3 col-sm-3">
+                                <a class="btn_full_outline" href="#"><i class=" icon-heart"></i> Add to Favorite</a>
+                                <br><br><br><br><br><br><br>
+                                <a class="btn_full_outline_2" href="{{route('member.transaksi', ['printing_id' => $printing_id])}}">Lakukan Transaksi</a>
+                            </div>
+                            @endauth
+                            <!--Favorite Button-->
+                        </div>
+                        </div>
+
+                        <div id="layanan" class="tab-pane fade">
+                            <ul class="nav nav-tabs font-12pt">
+                            @foreach($j_p_tersedias as $i=>$j_p_tersedia)
+                                @if($i==0)
+                                <li class="active"><a data-toggle="tab" href="#{{$i}}">{{$j_p_tersedia->nama}}</a></li>
+                                @else
+                                <li><a data-toggle="tab" href="#{{$i}}">{{$j_p_tersedia->nama}}</a></li>
+                                @endif
+                            @endforeach <!--endforeach utk $j_p_tersedias-->
+                            </ul>
+                            <div class="tab-content">
+                                @for($j=0;$j<$counter;$j++)
+                                @if($j==0)
+                                <div id="{{$j}}" class="tab-pane fade in active container">
+                                    <div style="width: 80% ; margin-left: 2.5%" align="center">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                  <th scope="col">No</th>
+                                                  <th scope="col">Jenis Kertas</th>
+                                                  <th scope="col">Ukuran Kertas</th>
+                                                  <th scope="col">Harga</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for($k=0;$k<$counter_cus[$j];$k++)
+                                                <tr>
+                                                  <th scope="row">{{$k+1}}</th>
+                                                  <td>{{$layanan_tersedia[$j][$k]->jenis_kertas->nama}}</td>
+                                                  <td>{{$layanan_tersedia[$j][$k]->ukuran_kertas->nama}}</td>
+                                                  <td>Rp {{$harga[$j][$k][0]->harga}}</td>
+                                                </tr>
+                                                @endfor
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                @else
+                                <div id="{{$j}}" class="tab-pane fade container">
+                                    <div style="width: 80% ; margin-left: 2.5%" align="center">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                  <th scope="col">No</th>
+                                                  <th scope="col">Jenis Kertas</th>
+                                                  <th scope="col">Ukuran Kertas</th>
+                                                  <th scope="col">Harga</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for($k=0;$k<$counter_cus[$j];$k++)
+                                                <tr>
+                                                  <th scope="row">{{$k +1}}</th>
+                                                  <td>{{$layanan_tersedia[$j][$k]->jenis_kertas->nama}}</td>
+                                                  <td>{{$layanan_tersedia[$j][$k]->ukuran_kertas->nama}}</td>
+                                                  <td>Rp {{$harga[$j][$k][0]->harga}}</td>
+                                                </tr>
+                                                @endfor
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                @endif
+                                @endfor
+                            </div>
+                        </div>
+                    </div>
+                </div>
 			</div>
 			<!-- End row -->
-		<hr>
-		<div id="map_contact"></div>
-        <!-- end map-->
+        </div>
         @endforeach
 	</main>
 	<!-- End main -->
@@ -133,5 +228,4 @@
 			</button>
 		</form>
 	</div><!-- End Search Menu -->
-
 @endsection

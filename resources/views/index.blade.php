@@ -194,15 +194,15 @@ function showPosition(position) {
                                             <li><a href="#">Jembrana</a></li>
                                         </ul>
                                     </li> -->
-                                    <li><a href="/printing/denpasar">Denpasar</a></li>
-                                    <li><a href="/printing/badung">Badung</a></li>
-                                    <li><a href="/printing/tabanan">Tabanan</a></li>
-                                    <li><a href="/printing/gianyar">Gianyar</a></li>
-                                    <li><a href="/printing/karangasem">Karangasem</a></li>
-                                    <li><a href="/printing/klungkung">Klungkung</a></li>
-                                    <li><a href="/printing/singaraja">Singaraja</a></li>
-                                    <li><a href="/printing/bangli">Bangli</a></li>
-                                    <li><a href="/printing/jembrana">Jembrana</a></li>
+                                    <li><a href="{{route('everyone.city', 'denpasar')}}">Denpasar</a></li>
+                                    <li><a href="{{route('everyone.city', 'badung')}}">Badung</a></li>
+                                    <li><a href="{{route('everyone.city', 'denpasar')}}">Tabanan</a></li>
+                                    <li><a href="{{route('everyone.city', 'gianyar')}}">Gianyar</a></li>
+                                    <li><a href="{{route('everyone.city', 'karangasem')}}">Karangasem</a></li>
+                                    <li><a href="{{route('everyone.city', 'klungkung')}}">Klungkung</a></li>
+                                    <li><a href="{{route('everyone.city', 'singaraja')}}">Singaraja</a></li>
+                                    <li><a href="{{route('everyone.city', 'bangli')}}">Bangli</a></li>
+                                    <li><a href="{{route('everyone.city', 'jembrana')}}">Jembrana</a></li>
                                 </ul>
                             </li>
 
@@ -229,7 +229,7 @@ function showPosition(position) {
                         <li>
                             <div class="dropdown dropdown-cart">
                                 <a href="#" class="dropdown-toggle" id="access_link">Sign in</a>
-                                    <form method="POST" action="{{ route('login') }}">
+                                <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="dropdown-menu">
                                         <div class="form-group">
@@ -245,13 +245,27 @@ function showPosition(position) {
                                 </form>
                             </div><!-- End Dropdown access -->
                         </li>
-                        @else
+                        @endguest
+                        @auth('web','printing')
                         <li>
                             <div class="dropdown dropdown-cart">
                                 <a href="wishlist.html" id="wishlist_link">Favorite</a>
                             </div>
                         </li>
-                        @endguest      
+                        <li>
+                            <div class="dropdown dropdown-cart">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                        @endauth      
                     </ul>
                 </nav>
             </div>

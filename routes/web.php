@@ -19,13 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/index', 'PrintingController@home');
-
 Route::prefix('printing')->group(function() {
+	Route::get('', 'AdminController@index')->name('printing');
     Route::get('/login', 'Auth\PrintingLoginController@showLoginForm')->name('printing.login');
     Route::post('/login', 'Auth\PrintingLoginController@login')->name('printing.login.submit');
-	Route::get('{kota}', ['uses' =>'PrintingController@kota']);
-	Route::get('/{kota}/{nama}/detail', ['uses' =>'PrintingController@detailprinting']);
 	Route::get('/{kota}/{nama}/edit', ['uses' =>'PrintingController@edit']);
     Route::get('/', 'PrintingController@home')->name('printing.dashboard');
   });
@@ -44,5 +41,22 @@ Route::prefix('admin')->group(function() {
 
 //PRINTING SIDE//
 Route::prefix('printing')->group(function() {
-	Route::get('/layanan/{id}', 'PrintingController@layananTersedia');
+	Route::get('/login', 'Auth\PrintingLoginController@showLoginForm')->name('printing.login');
+    Route::post('/login', 'Auth\PrintingLoginController@login')->name('printing.login.submit');
+	Route::get('/layanan/{id}', 'PrintingController@layananTersedia')->middleware('auth:printing');
+	Route::get('/layanan/{id}/create', 'PrintingController@tambahLayananTersedia')->middleware('auth:printing');
+	Route::post('/layanan/{id}', 'PrintingController@storeTambahLayananTersedia')->middleware('auth:printing');
 });
+
+//MEMBER SIDE//
+Route::prefix('member')->group(function() {
+	Route::resource('/profile', 'UserController')->middleware('auth:web');;
+	Route::get('{printing_id}/transaksi', 'UserController@transaksi')->name('member.transaksi')->middleware('auth:web');
+	Route::post('{printing_id}/transaksi', 'UserController@transaksi2')->name('member.transaksi-2')->middleware('auth:web');
+	Route::post('{printing_id}/transaksi/save', 'UserController@transaksi3')->name('member.transaksi-3')->middleware('auth:web');
+});
+
+//EVERYONE SIDE//
+Route::get('/index', 'RegularController@home')->name('everyone.index');
+Route::get('{kota}', 'RegularController@kota')->name('everyone.city');
+Route::get('{kota}/{nama}/detail', 'RegularController@detailprinting')->name('everyone.detail');

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class LayananTersedia extends Migration
+class CreateFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class LayananTersedia extends Migration
      */
     public function up()
     {
-        Schema::create('layanan_tersedias', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('printing_id');
-            $table->integer('detail__print_id');
-            $table->integer('harga');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class LayananTersedia extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('favorites');
     }
 }

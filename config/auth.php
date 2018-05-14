@@ -50,10 +50,6 @@ return [
             'driver' => 'session',
             'provider' => 'printings',
         ],
-        'printing-api' => [
-            'driver' => 'token',
-            'provider' => 'printings',
-        ],
     ],
 
     /*
@@ -114,7 +110,7 @@ return [
         'printings' => [
             'provider' => 'printings',
             'table' => 'password_resets',
-            'expire' => 15,
+            'expire' => 60,
         ],
     ],
 

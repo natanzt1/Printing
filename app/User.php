@@ -9,4 +9,8 @@ class User extends Authenticatable
 {
 	//Fillable adalah variable yang menentukan data dari field mana yang dapat disimpan ke model/database
     protected $fillable = ['username', 'email', 'password'];
+
+	public function Favorite(){
+    	return $this->hasMany('App\Favorite');
+    }
 }

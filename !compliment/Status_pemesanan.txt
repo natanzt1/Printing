@@ -1,0 +1,7 @@
+Status Pemesanan
+
+0 = Diterima Sistem
+1 = Dikunci / Menunggu Pembayaran
+2 = Diterima Printing
+3 = Selesai
+4 = Dibatalkan
