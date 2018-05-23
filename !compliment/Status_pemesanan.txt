@@ -4,4 +4,5 @@ Status Pemesanan
 1 = Dikunci / Menunggu Pembayaran
 2 = Diterima Printing
 3 = Selesai
-4 = Dibatalkan
+4 = Dirating
+5 = Dibatalkan

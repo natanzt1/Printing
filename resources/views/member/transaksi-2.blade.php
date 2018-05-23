@@ -59,12 +59,18 @@
                                 </select>
                             </div>
                             <div class="form-group row">
-                                <label for="Jumlah">Jumlah Cetak</label>
-                                <input type="number" class="form-control" style="width: 40%; margin-bottom: 5px" name="jumlah" placeholder="Jumlah Cetak" required>
+                                <div class="col-md-6 col-sm-6" align="right">
+                                    <label for="Jumlah halaman">Jumlah Halaman</label>
+                                    <input type="number" class="form-control" style="width: 40%; margin-bottom: 5px" name="jumlah_halaman" placeholder="Jumlah Halaman File Anda" required>
+                                </div>
+                                <div class="col-md-6 col-sm-6" align="left">
+                                    <label for="Jumlah Cetak">Jumlah Rangkap</label>
+                                    <input type="number" class="form-control" style="width: 40%; margin-bottom: 5px" name="jumlah_cetak" placeholder="Jumlah Rangkap Cetak" required>
+                                </div>
                             </div>
                             <div class="form-group row">
-                                <label for="Jumlah">Upload File Anda (*JPG, *PNG, *PDF)</label>
-                                <input type="file" class="form-control" style="width: 40%; margin-bottom: 5px" name="file" required>
+                                <label for="Upload">Upload File Anda (*JPG, *PNG, *PDF)</label>
+                                <input type="file" class="form-control" style="width: 40%; margin-bottom: 5px" name="file" required>                                    
                             </div>
                             <input type="submit" class="btn btn-primary" value="Lanjutkan">
                         </form>

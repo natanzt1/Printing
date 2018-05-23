@@ -13,47 +13,89 @@
                 </ul>
             </div>
         </div>
-        <!-- End Position -->
+        <!-- End position -->
+
         <div class="container margin_60">
-            <section id="hero_2">
-                <div class="intro_title animated fadeInDown">
-                    <h1>Transaksi di {{$printing->nama}}</h1>
-                    <div class="bs-wizard">
-                        <div class="col-xs-4 bs-wizard-step complete">
-                            <div class="text-center bs-wizard-stepnum">Pilih Jenis Printing</div>
-                            <div class="progress">
-                                <div class="progress-bar"></div>
-                            </div>
-                            <a href="#" class="bs-wizard-dot"></a>
+            <div class="main_title">
+                <h2>Pembayaran <span>Transaksi</span> </h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Selesaikan pembayaran dengan nominal <strong>Rp{{$total[0]->total}}</strong> melalui :</h4>
+                    <ul id="profile_summary">
+                        <li>Bank Mandiri <span><strong>: 129312390131092</strong> a/n PT.CetakCetak</span></li>
+                        <li>Bank BCA <span><strong>: 2192319023812098</strong> a/n PT.CetakCetak</span></li>
+                        <li>Bank Mandiri <span><strong>: 85823742798234</strong> a/n PT.CetakCetak</span></li>
+                    </ul>
+                    <form action="{{route('member.postbukti', $trx_id)}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="Upload Foto">Upload foto bukti bayar</label>
+                            <input type="file" style="width: 40%" class="form-control" id="foto" name="bukti">
                         </div>
-
-                        <div class="col-xs-4 bs-wizard-step complete">
-                            <div class="text-center bs-wizard-stepnum">Lengkapi Data</div>
-                            <div class="progress">
-                                <div class="progress-bar"></div>
-                            </div>
-                            <a href="#" class="bs-wizard-dot"></a>
-                        </div>
-
-                        <div class="col-xs-4 bs-wizard-step active">
-                            <div class="text-center bs-wizard-stepnum">Data Diterima</div>
-                            <div class="progress">
-                                <div class="progress-bar"></div>
-                            </div>
-                            <a href="#" class="bs-wizard-dot"></a>
-                        </div>
-                    </div>
-                    <!-- End bs-wizard -->
-                    <br><br><br><br>
-                    <div class="container" align="center">
-                        <h2 style="color: #FFF">Data Berhasil Disimpan. List Pesanan Anda dapat dilihat <a href="{{route('member.cart', Auth()->user()->id)}}">disini</a></h2>
-                    </div>
-                    <br>
+                        <input type="submit" value="Upload" class="btn btn-primary">
+                    </form>
                 </div>
-                <!-- End intro-title -->
-            </section>
-            <hr>
+                <!-- End col-md-8 -->
+
+                <!--
+                <aside class="col-md-4">
+                    <div class="box_style_1">
+                        <h3 class="inner">- Summary -</h3>
+                        <table class="table table_summary">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Adults
+                                    </td>
+                                    <td class="text-right">
+                                        2
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Children
+                                    </td>
+                                    <td class="text-right">
+                                        0
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Dedicated tour guide
+                                    </td>
+                                    <td class="text-right">
+                                        $34
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Insurance
+                                    </td>
+                                    <td class="text-right">
+                                        $34
+                                    </td>
+                                </tr>
+                                <tr class="total">
+                                    <td>
+                                        Total cost
+                                    </td>
+                                    <td class="text-right">
+                                        $154
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="btn_full" href="payment.html">Check out</a>
+                        <a class="btn_full_outline" href="#"><i class="icon-right"></i> Continue shopping</a>
+                    </div>
+                </aside>
+                -->
+                <!-- End aside -->
+            </div>
+            <!--End row -->
         </div>
+        <!--End container -->
     </main>
     <!-- End main -->
 
@@ -63,7 +105,7 @@
                 <div class="col-md-4 col-sm-3">
                     <h3>Need help?</h3>
                     <a href="tel://004542344599" id="phone">+45 423 445 99</a>
-                    <a href="http://www.ansonika.com/cdn-cgi/l/email-protection#066e636a7646656f727f72697374752865696b" id="email_footer"><span class="__cf_email__" data-cfemail="84ece1e8f4c4e7edf0fdf0ebf1f6f7aae7ebe9">[email&#160;protected]</span></a>
+                    <a href="http://www.ansonika.com/cdn-cgi/l/email-protection#e28a878e92a2818b969b968d979091cc818d8f" id="email_footer"><span class="__cf_email__" data-cfemail="761e131a0636151f020f02190304055815191b">[email&#160;protected]</span></a>
                 </div>
                 <div class="col-md-3 col-sm-3">
                     <h3>About</h3>

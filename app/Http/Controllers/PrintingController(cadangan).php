@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use App\Transaksi;
+use App\Detail_transaksi;
 use App\Printing;
 use App\Layanan_tersedia;
 use App\Detail_print;
@@ -29,7 +32,7 @@ class PrintingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function home()
     {
         return view('printing');
     }
@@ -191,5 +194,70 @@ class PrintingController extends Controller
             $new->save();
         }
         return "Layanan Berhasil Ditambahkan";
+    }
+
+    public function transaksi()
+    {
+        $auth_id = Auth()->printing()->id;
+
+        $trx_2 = Transaksi::where('printing_id',$auth_id)
+                    ->where('status_pemesanan',2)
+                    ->get();
+        $cart_2[0][0] = 0;
+        if(isset($trx_2[0])){
+            foreach($trx_2 as $i=>$trx){
+                $id = $trx->id;
+                $cart_2[$i] = DB::select("
+                    SELECT detail_transaksis.id, jumlah_halaman, jumlah_cetak, file, 
+                        jenis_kertas.nama as jenis_kertas, 
+                        jenis_printings.nama as jenis_printing, 
+                        ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
+                        (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
+                        printings.nama as nama_printing,
+                        detail_transaksis.`transaksi_id`
+                    FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                    WHERE transaksis.id = detail_transaksis.`transaksi_id`
+                    AND transaksis.id = $id
+                    AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
+                    AND layanan_tersedias.detail__print_id = detail__prints.id
+                    AND detail__prints.jenis_kertas_id = jenis_kertas.id
+                    AND detail__prints.jenis_printing_id = jenis_printings.id
+                    AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
+                    AND transaksis.printing_id = printings.id
+                    ORDER BY detail_transaksis.id");    
+            }
+        }
+
+        $trx_3 = Transaksi::where('printing_id',$auth_id)
+                    ->where('status_pemesanan', '>',2,'<','5')
+                    ->get();
+
+        $cart_3[0][0] = 0;
+        if(isset($trx_3[0])){
+            foreach($trx_3 as $i=>$trx){
+                $id = $trx->id;
+                $cart_3[$i] = DB::select("
+                    SELECT detail_transaksis.id, jumlah_halaman, jumlah_cetak, file, 
+                        jenis_kertas.nama as jenis_kertas, 
+                        jenis_printings.nama as jenis_printing, 
+                        ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
+                        (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
+                        printings.nama as nama_printing,
+                        detail_transaksis.`transaksi_id`,
+                        status_pemesanan
+                    FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                    WHERE transaksis.id = detail_transaksis.`transaksi_id`
+                    AND transaksis.id = $id
+                    AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
+                    AND layanan_tersedias.detail__print_id = detail__prints.id
+                    AND detail__prints.jenis_kertas_id = jenis_kertas.id
+                    AND detail__prints.jenis_printing_id = jenis_printings.id
+                    AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
+                    AND transaksis.printing_id = printings.id
+                    ORDER BY detail_transaksis.id");    
+            }
+        }
+        
+        return view('/printing/transaksi', compact('cart_2','cart_3'));
     }
 }

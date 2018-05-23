@@ -46,6 +46,7 @@ Route::prefix('printing')->group(function() {
 	Route::get('/layanan/{id}', 'PrintingController@layananTersedia')->middleware('auth:printing');
 	Route::get('/layanan/{id}/create', 'PrintingController@tambahLayananTersedia')->middleware('auth:printing');
 	Route::post('/layanan/{id}', 'PrintingController@storeTambahLayananTersedia')->middleware('auth:printing');
+	Route::get('/transaksi', 'PrintingController@Transaksi')->middleware('auth:printing');
 });
 
 //MEMBER SIDE//
@@ -54,6 +55,13 @@ Route::prefix('member')->group(function() {
 	Route::get('{printing_id}/transaksi', 'UserController@transaksi')->name('member.transaksi')->middleware('auth:web');
 	Route::post('{printing_id}/transaksi', 'UserController@transaksi2')->name('member.transaksi-2')->middleware('auth:web');
 	Route::post('{printing_id}/transaksi/save', 'UserController@transaksi3')->name('member.transaksi-3')->middleware('auth:web');
+	Route::get('{user_id}/transaksi/cart', 'UserController@cart')->name('member.cart')->middleware('auth:web');
+	Route::post('/transaksi/download', 'UserController@download')->name('member.download');
+	Route::get('/transaksi/checkout/{transaksi_id}', 'UserController@checkout')->name('member.checkout')->middleware('auth:web');
+	Route::get('/transaksi/bukti/{transaksi_id}', 'UserController@getbukti')->name('member.getbukti')->middleware('auth:web');
+	Route::post('/transaksi/bukti/{transaksi_id}', 'UserController@postbukti')->name('member.postbukti')->middleware('auth:web');
+	Route::get('/transaksi/bukti/{transaksi_id}', 'UserController@getrating')->name('member.getrating')->middleware('auth:web');
+	Route::post('/transaksi/bukti/{transaksi_id}', 'UserController@postrating')->name('member.postrating')->middleware('auth:web');
 });
 
 //EVERYONE SIDE//

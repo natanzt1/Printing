@@ -33,4 +33,6 @@ class Printing extends Authenticatable
     public function Favorite(){
         return $this->hasMany('App\Favorite');
     }
+
+    
 }
