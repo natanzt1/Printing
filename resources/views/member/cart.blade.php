@@ -33,7 +33,7 @@
                         <div id="cart" class="tab-pane fade in active">
                             @foreach($cart_0 as $cart)
                             @if(is_object($cart[0]))
-                            $total = 0;
+                            <?php $total = 0; ?>
                             <table class="table table-striped cart-list add_bottom_30">
                                 <h4>{{$cart[0]->nama_printing}}</h4>
                                 <thead>
@@ -152,7 +152,7 @@
                                                         <h4><strong>Rp{{$total}}</strong></h4>
                                                     </td>
                                                     <td>
-                                                        <a href="{{route('member.getbukti', $cart[0]->transaksi_id)}}"><button class="btn btn-success">Bayar Sekarang</button></a>
+                                                        <a href="/member/transaksi/bukti/{{$cart[0]->transaksi_id}}"><button class="btn btn-success">Bayar Sekarang</button></a>
                                                     </td>   
                                                 </td></td></td>
                                             </tr>

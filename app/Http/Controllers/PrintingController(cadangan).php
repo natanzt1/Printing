@@ -214,8 +214,9 @@ class PrintingController extends Controller
                         ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
                         (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                         printings.nama as nama_printing,
+                        users.nama as nama_user,
                         detail_transaksis.`transaksi_id`
-                    FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                    FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings, users
                     WHERE transaksis.id = detail_transaksis.`transaksi_id`
                     AND transaksis.id = $id
                     AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
@@ -224,12 +225,14 @@ class PrintingController extends Controller
                     AND detail__prints.jenis_printing_id = jenis_printings.id
                     AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
                     AND transaksis.printing_id = printings.id
+                    AND transaksis.user_id = users.id
                     ORDER BY detail_transaksis.id");    
             }
         }
 
         $trx_3 = Transaksi::where('printing_id',$auth_id)
-                    ->where('status_pemesanan', '>',2,'<','5')
+                    ->where('status_pemesanan', '>',2)
+                    ->where('status_pemesanan', '<',5)
                     ->get();
 
         $cart_3[0][0] = 0;
@@ -243,9 +246,11 @@ class PrintingController extends Controller
                         ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
                         (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                         printings.nama as nama_printing,
-                        detail_transaksis.`transaksi_id`,
+                        users.nama as nama_user,
+                        detail_transaksis.transaksi_id,
+                        transaksis.rating as rating,
                         status_pemesanan
-                    FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                    FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings, users
                     WHERE transaksis.id = detail_transaksis.`transaksi_id`
                     AND transaksis.id = $id
                     AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
@@ -254,10 +259,20 @@ class PrintingController extends Controller
                     AND detail__prints.jenis_printing_id = jenis_printings.id
                     AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
                     AND transaksis.printing_id = printings.id
+                    AND transaksis.user_id = users.id
                     ORDER BY detail_transaksis.id");    
             }
         }
-        
+
         return view('/printing/transaksi', compact('cart_2','cart_3'));
+    }
+
+    public function trxSelesai($trx_id)
+    {
+        $transaksi = Transaksi::find($trx_id);
+        $transaksi->status_pemesanan = 3;
+        $transaksi->tgl_selesai = NOW();
+        $transaksi->save();
+        return redirect(route('printing.transaksi'));
     }
 }

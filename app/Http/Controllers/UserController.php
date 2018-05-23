@@ -55,7 +55,9 @@ class UserController extends Controller
     public function show($id)
     {
         $member = User::find($id);
+
         return view('/member/profile', compact('member', 'id'));
+
     }
 
     /**
@@ -84,7 +86,7 @@ class UserController extends Controller
         $member = User::find($id);
         $username = $member->username;
         $nama_file = $username.".jpg";
-        $foto->storeAs('member_profile', $nama_file, 'public');
+        $foto->storeAs('storage/member_profile', $nama_file, 'public');
         $path = "storage/member_profile/$nama_file";
         $member->nama = $nama;
         $member->foto = $path;

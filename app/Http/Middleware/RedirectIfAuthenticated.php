@@ -18,9 +18,14 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         switch ($guard) {
+        case 'admin':
+          if (Auth::guard($guard)->check()) {
+            return redirect()->route('everyone.index');
+          }
+          break;
         case 'printing':
           if (Auth::guard($guard)->check()) {
-            return redirect()->route('printing.dashboard');
+            return redirect()->route('everyone.index');
           }
           break;
         default:

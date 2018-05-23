@@ -9,7 +9,7 @@ class Layanan_tersedia extends Model
     public function Printing(){
     	return $this->belongsTo('App\Printing', 'printing_id');
     }
-    public function Detail_print(){
-    	return $this->belongsTo('App\Detail_print', 'detail__print_id');
+    public function Detail_layanan(){
+    	return $this->hasMany('App\Detail_layanan');
     }
 }

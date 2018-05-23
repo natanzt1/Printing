@@ -50,6 +50,11 @@ return [
             'driver' => 'session',
             'provider' => 'printings',
         ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
     ],
 
     /*
@@ -78,6 +83,11 @@ return [
         'printings' => [
             'driver' => 'eloquent',
             'model' => App\Printing::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Admin::class,
         ],
 
         // 'users' => [
@@ -109,6 +119,12 @@ return [
         ],
         'printings' => [
             'provider' => 'printings',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'admins',
             'table' => 'password_resets',
             'expire' => 60,
         ],

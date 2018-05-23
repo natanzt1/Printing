@@ -18,7 +18,7 @@ class Printing extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'job_title',
+        'username', 'email', 'password',
     ];
 
     /**
@@ -33,6 +33,8 @@ class Printing extends Authenticatable
     public function Favorite(){
         return $this->hasMany('App\Favorite');
     }
-
     
+    public function Transaksi(){
+        return $this->hasMany('App\Transaksi');
+    }
 }

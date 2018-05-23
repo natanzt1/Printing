@@ -32,7 +32,7 @@
                             @if(is_object($cart[0]))
                             <?php $total = 0; ?>
                             <table class="table table-striped cart-list add_bottom_30">
-                                <h4>{{$cart[0]->nama_printing}}</h4>
+                                <h4>{{$cart[0]->nama_user}}</h4>
                                 <thead>
                                     <tr>
                                         <th>Jenis Cetak</th>
@@ -80,7 +80,10 @@
                                             <tr>
                                                 <td><td><td><td><td>
                                                     <td>
-                                                        <a href="{{route('member.getrating', $cart[0]->transaksi_id)}}"><button class="btn btn-success">Orderan Sudah Selesai</button></a>
+                                                        <form method="POST" action="{{route('printing.trx_selesai', $cart[0]->transaksi_id)}}">
+                                                            @csrf
+                                                            <input type="submit" class="btn btn-success" value="Order Selesai">    
+                                                        </form>
                                                     </td>   
                                                 </td></td></td></td></td>
                                             </tr>
@@ -99,7 +102,7 @@
                             @if(is_object($cart[0]))
                             <?php $total = 0; ?>
                             <table class="table table-striped cart-list add_bottom_30">
-                                <h4>{{$cart[0]->nama_printing}}</h4>
+                                <h4>{{$cart[0]->nama_user}}</h4>
                                 <thead>
                                     <tr>
                                         <th>Jenis Cetak</th>
@@ -139,7 +142,24 @@
                                             </tr>
                                         @endforeach
                                         @if($trx0->status_pemesanan == 3)
-                                            <tr><td></td></tr>
+                                            <tr>
+                                                <td><td><td><td>
+                                                    <td>
+                                                        <h4>Total Transaksi</h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4><strong>Rp{{$total}}</strong></h4>
+                                                    </td>
+                                                </td></td></td></td>
+                                            </tr>
+                                            <tr>
+                                                <td><td><td><td><td>
+                                                    <td style="word-wrap:break-word ; width: 150px">
+                                                        <h6><span>Transaksi Belum diberi Rating</span></h6>
+                                                    </td>   
+                                                </td></td></td></td></td>
+                                            </tr>
+                                        @elseif($trx0->status_pemesanan == 4)
                                             <tr>
                                                 <td><td><td>
                                                     <td>
@@ -148,8 +168,15 @@
                                                     <td>
                                                         <h4><strong>Rp{{$total}}</strong></h4>
                                                     </td>
-                                                    <td>
-                                                        <a href="{{route('member.getrating', $cart[0]->transaksi_id)}}"><button class="btn btn-success">Nilai Sekarang</button></a>
+                                                    <td >
+                                                        @for($star=0 ; $star< 5; $star++ )
+                                                            @if($star<($trx0->rating))
+                                                                <i class="icon-star voted"></i>
+                                                            @else
+                                                                <i class=" icon-star-empty"></i>
+                                                            @endif
+                                                        @endfor
+                                                        ({{$trx0->rating}} of 5)
                                                     </td>   
                                                 </td></td></td>
                                             </tr>

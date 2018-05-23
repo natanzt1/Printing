@@ -2,7 +2,8 @@ Status Pemesanan
 
 0 = Diterima Sistem
 1 = Dikunci / Menunggu Pembayaran
-2 = Diterima Printing
-3 = Selesai
-4 = Dirating
-5 = Dibatalkan
+2 = Pembayaran Diterima
+3 = Order Diterima Printing / Pembayaran Sudah Dikonfirmasi
+4 = Selesai
+5 = Dirating
+6 = Dibatalkan

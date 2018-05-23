@@ -174,26 +174,13 @@ function showPosition(position) {
                     <a class="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="javascript:void(0);"><span>Menu mobile</span></a>
                     <div class="main-menu">
                         <div id="header_menu">
-                            <img src="img/logo_sticky.png" width="160" height="34" alt="City tours" data-retina="true">
+                            <img src="{{ URL::asset('img/logo_sticky.png') }}" width="160" height="34" alt="City tours" data-retina="true">
                         </div>
                         <a href="#" class="open_close" id="close_in"><i class="icon_set_1_icon-77"></i></a>
                         <ul>
                             <li class="submenu">
                                 <a href="javascript:void(0);" class="show-submenu">List Printing <i class="icon-down-open-mini"></i></a>
                                 <ul>
-                                    <!--<li><a href="javascript:void(0);">Revolution slider</a>
-                                        <ul>
-                                            <li><a href="#">Denpasar</a></li>
-                                            <li><a href="#">Badung</a></li>
-                                            <li><a href="#">Tabanan</a></li>
-                                            <li><a href="#">Gianyar</a></li>
-                                            <li><a href="#">Karangasem</a></li>
-                                            <li><a href="#">Klungkung</a></li>
-                                            <li><a href="#">Singaraja</a></li>
-                                            <li><a href="#">Bangli</a></li>
-                                            <li><a href="#">Jembrana</a></li>
-                                        </ul>
-                                    </li> -->
                                     <li><a href="{{route('everyone.city', 'denpasar')}}">Denpasar</a></li>
                                     <li><a href="{{route('everyone.city', 'badung')}}">Badung</a></li>
                                     <li><a href="{{route('everyone.city', 'denpasar')}}">Tabanan</a></li>
@@ -216,7 +203,51 @@ function showPosition(position) {
 
                             <li class="submenu">
                                 <a href="javascript:void(0);" class="show-submenu">FAQ <i class="icon-up-open-mini"></i></a>
-                            </li>                                             
+                            </li>
+                            @auth('web')
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="show-submenu" id="access_link">{{Auth()->user()->nama}} <i class="icon-down-open-mini"></i></a>
+                                <ul>
+                                    <li><a href="{{route('profile.show', Auth()->user()->id)}}">Profile</a></li>
+                                    <li><a href="#">Wishlist</a></li>
+                                    <li><a href="{{route('member.cart', Auth()->user()->id)}}">Cart</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                            <input type="submit" value="Log Out" class="btn btn-danger">
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>  
+                            @endauth
+                            @auth('printing')
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="show-submenu" id="access_link">Profile <i class="icon-down-open-mini"></i></a>
+                                <ul>
+                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="#">Wishlist</a></li>
+                                    <li><a href="{{route('printing.transaksi')}}">Transaksi</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                            <input type="submit" value="Log Out" class="btn btn-danger">
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>  
+                            @endauth                                           
                         </ul>
                     </div><!-- End main-menu -->
                     <ul id="top_tools">
@@ -246,26 +277,6 @@ function showPosition(position) {
                             </div><!-- End Dropdown access -->
                         </li>
                         @endguest
-                        @auth('web','printing')
-                        <li>
-                            <div class="dropdown dropdown-cart">
-                                <a href="wishlist.html" id="wishlist_link">Favorite</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown dropdown-cart">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                        @endauth      
                     </ul>
                 </nav>
             </div>
