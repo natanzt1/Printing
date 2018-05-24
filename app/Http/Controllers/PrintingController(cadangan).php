@@ -7,6 +7,7 @@ use App\Transaksi;
 use App\Detail_transaksi;
 use App\Printing;
 use App\Layanan_tersedia;
+use Illuminate\Support\Facades\Hash;
 use App\Detail_layanan;
 use App\Jenis_printing;
 use Illuminate\Http\Request;
@@ -54,6 +55,8 @@ class PrintingController extends Controller
 
         $this->validate(request(),[
             'nama'=> 'required',
+            'username'=> 'required|unique:printings',
+            'email'=> 'required|unique:printings',
             'lokasi'=> 'required',
             'event_lat' => 'required',
             'event_lng' => 'required',
@@ -82,6 +85,9 @@ class PrintingController extends Controller
 
         $printing = new Printing();
         $printing->nama = $request->get('nama');
+        $printing->email = $request->email;
+        $printing->username = $request->username;
+        $printing->password = Hash::make($request->password);
         $printing->kabupaten = $city;
         $printing->alamat = $request->get('lokasi');
         $printing->lat = $request->get('event_lat');

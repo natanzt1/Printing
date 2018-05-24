@@ -27,7 +27,9 @@ class RegularController extends Controller
      */
     public function kota($kota)
     {
-        $printings = Printing::where('kabupaten', 'like', "%$kota%")->get();
+        $printings = Printing::where('kabupaten', 'like', "%$kota%")
+                        ->where('status',1)
+                        ->get();
         return view('printing-city', compact('kota', 'printings'));
     }
 

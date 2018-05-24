@@ -149,8 +149,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <div id="logo_home">
-                        <h1><a href="/home" title="CetakCetak">CetakCetak</a></h1>
+                    <div>
+                    	<h1><a href="/index" title="CetakCetak">CetakCetak</a></h1>
                     </div>
                 </div>
                 <nav class="col-md-9 col-sm-9 col-xs-9">

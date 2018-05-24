@@ -48,6 +48,7 @@ Route::prefix('admin')->group(function() {
 Route::prefix('printing')->group(function() {
 	Route::get('/', 'PrintingController@home')->name('printing.dashboard');
 	Route::get('/register', 'PrintingController@create')->name('printing.register');
+	Route::post('/register', 'PrintingController@store')->name('printing.store');
 	
 	Route::get('/login', 'Auth\PrintingLoginController@showLoginForm')->name('printing.login')->middleware('guest');
     Route::post('/login', 'Auth\PrintingLoginController@login')->name('printing.login.submit')->middleware('guest');

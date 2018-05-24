@@ -131,17 +131,27 @@
 	</div>
 
 	<section class="container wrapper-small">
-        <form class="row" action="/register-printing" method="POST" enctype="multipart/form-data">
+        <form class="row" action="{{route('printing.store')}}" method="POST" enctype="multipart/form-data">
           {{csrf_field()}}
             <div class="col-lg-12 mt-4">
                 <label for="event_name">Nama Printingmu</label>
                 <input id="event_name" type="text" name="nama" class="col-lg-8 form-control">
             </div>
 
-            <!--<div class="col-lg-12 mt-4">
-                <label for="event_price">Ticket Price</label>
-                <input id="event_price" type="number" name="event_ticket_prc" class="col-lg-5 form-control" required>
-            </div> -->
+            <div class="col-lg-12 mt-4">
+                <label for="event_name">Username</label>
+                <input id="event_name" type="text" name="username" class="col-lg-8 form-control">
+            </div>
+
+            <div class="col-lg-12 mt-4">
+                <label for="event_name">Email</label>
+                <input id="event_name" type="email" name="email" class="col-lg-8 form-control">
+            </div>
+
+            <div class="col-lg-12 mt-4">
+                <label for="event_name">Password</label>
+                <input id="event_name" type="password" name="password" class="col-lg-8 form-control">
+            </div>
 
             <div class="col-lg-12 mt-4">
                 <label for="event_location">Lokasi Lengkapnya</label>
@@ -150,7 +160,7 @@
 
 
             <div class="col-lg-12 mt-4">
-                <label for="map">Pilih Lokasi Acara</label>
+                <label for="map">Pilih Lokasi Printing</label>
                 <input id="lat" type="hidden" name="event_lat"/>
                 <input id="lng" type="hidden" name="event_lng"/><br>
                 <input id="pac-input" class="col-lg-8 form-control" type="text" placeholder="Cari Lokasinya Disini">
