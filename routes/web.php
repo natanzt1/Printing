@@ -40,7 +40,10 @@ Route::prefix('admin')->group(function() {
 
 	Route::get('transaksi', 'AdminController@getTransaksi')->name('admin.getTransaksi')->middleware('auth:admin');
 	Route::get('transaksi/{id}', 'AdminController@konfirmasiTrx')->name('admin.konfirmasiTrx')->middleware('auth:admin');
-	Route::get('transaksi/{id}/tolak', 'AdminController@toalTrx')->name('admin.tolakTrx')->middleware('auth:admin');
+	Route::get('transaksi/{id}/tolak', 'AdminController@tolakTrx')->name('admin.tolakTrx')->middleware('auth:admin');
+	Route::get('profile', 'AdminController@show')->name('admin.profile')->middleware('auth:admin');
+	Route::get('profile/edit', 'AdminController@edit')->name('admin.edit')->middleware('auth:admin');
+	Route::post('profile/edit', 'AdminController@update')->name('admin.update')->middleware('auth:admin');
 });
 
 //PRINTING SIDE//

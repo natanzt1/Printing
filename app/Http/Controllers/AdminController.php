@@ -82,7 +82,12 @@ class AdminController extends Controller
         $admins = Admin::where('status',0)->get();
         $trx_bayars = Transaksi::where('status_pemesanan', 3)->get();
         $printings = Printing::where('status',0)->get();
-        return view('admin.index', compact('admins','trx_bayars','printings'));
+        $printings_aktif = Printing::where('status',1)->get();
+        $users_aktif = User::where('status', 1)->get();
+        $users_banned = User::where('status', 2)->get();
+        $printings_banned = Printing::where('status', 2)->get();
+        return view('admin.index', compact('admins','trx_bayars','printings','users_banned', 
+            'printings_banned', 'users_aktif', 'printings_aktif'));
     }
 
     /**
@@ -98,7 +103,8 @@ class AdminController extends Controller
             return redirect('admin.index');
         }
         $users = User::all();
-        return view('admin.user', compact('users'));
+        $title = "Member Terdaftar";
+        return view('admin.user', compact('users', 'title'));
     }
 
     public function getPrinting()
@@ -107,7 +113,8 @@ class AdminController extends Controller
             return redirect('admin.index');
         }
         $printings = Printing::all();
-        return view('admin.printing', compact('printings'));
+        $title = "Printing Terdaftar";
+        return view('admin.printing', compact('printings', 'title'));
     }
 
     public function getBannedMember()
@@ -115,8 +122,9 @@ class AdminController extends Controller
         if(Auth()->admin()->status == 0){
             return redirect('admin.index');
         }
+        $title = "Member Terbanned";
         $users = User::where('status', 2)->get();
-        return view('admin.user', compact('users'));
+        return view('admin.user', compact('users', 'title'));
     }
 
     public function getBannedPrinting()
@@ -124,8 +132,9 @@ class AdminController extends Controller
         if(Auth()->admin()->status == 0){
             return redirect('admin.index');
         }
+        $title = "Printing Terbanned";
         $printings = Printing::where('status',2)->get();
-        return view('admin.printing', compact('printings'));
+        return view('admin.printing', compact('printings', 'title'));
     }
 
     public function bannedMember($id)
@@ -147,7 +156,7 @@ class AdminController extends Controller
     public function bannedPrinting($id)
     {
         $user = Printing::find($id);
-        $user->status = 1;
+        $user->status = 2;
         $user->save();
         return redirect(route('admin.printing'));
     }
@@ -180,5 +189,30 @@ class AdminController extends Controller
         $trx->status_pemesanan = 6;
         $trx->save();
         return redirect(route('admin.getTransaksi'));
+    }
+
+    public function show()
+    {
+        $id = Auth()->admin()->id;
+        $admin = Admin::find($id);
+        return view('admin.profil', compact('admin'));
+    }
+
+    public function edit()
+    {
+        $id = Auth()->admin()->id;
+        $admin = Admin::find($id);
+        return view('admin.profil-edit', compact('admin'));
+    }
+
+    public function update(Request $request)
+    {
+        $nama = $request->nama;
+        $id = Auth()->admin()->id;
+        $admin = Admin::find($id);
+        $admin->nama = $nama;
+        $admin->save();
+        return redirect(route('admin.profile'));
+        
     }
 }
