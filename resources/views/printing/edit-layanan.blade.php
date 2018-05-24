@@ -11,30 +11,33 @@
 			<div class="row" style="background-color: #FFF ; padding: 5%">
                 <div class="col-md-12 col-sm-12">
                     <h3><span>Layanan Baru</span></h3>
-                    <form method="POST" action="{{route('printing.storeLayanan')}}">
+                    <form method="POST" action="{{route('printing.storeEditLayanan', $id)}}">
                         @csrf
-                        <h4>Bila Anda ingin menambah jenis printing, masuk ke <a href="{{route('printing.tambahJenis')}}">Sini</a></h4>
                         <div class="form-group">
                             <label for="Email">Jenis Printing</label><br>
                             <select class="form-control" name="jenis_printing">
+                                <option value="{{$layanan->layanan_tersedia_id}}">
+                                    {{$jenis_printing->jenis_printing}}</option>
                                 @foreach($jenis_layanans as $jenis)
+                                @if( $jenis->jenis_printing != $jenis_printing->jenis_printing )
                                 <option value="{{$jenis->id}}">{{$jenis->jenis_printing}}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="Email">Ukuran Kertas</label><br>
-                            <input type="email" class="form-control" name="ukuran_kertas" placeholder="Contoh : A4, 200cmx200cm">
+                            <input type="text" class="form-control" name="ukuran_kertas" value="{{$layanan->ukuran_kertas}}">
                         </div>
                         <div class="form-group">
                             <label for="Email">Jenis Kertas</label><br>
-                            <input type="email" class="form-control" name="jenis_kertas" placeholder="Contoh : HVS, Art Paper 260GSM">
+                            <input type="text" class="form-control" name="jenis_kertas" value="{{$layanan->jenis_kertas}}">
                         </div>
                         <div class="form-group">
                             <label for="Username">Harga</label><br>
-                            <input type="number" class="form-control" name="harga" placeholder="Contoh : 2500,3000">
+                            <input type="number" class="form-control" name="harga" value="{{$layanan->harga}}">
                         </div>
-                        <input type="submit" value="Tambah Layanan" class="btn btn-primary" style="float: right;">
+                        <input type="submit" value="Edit Layanan" class="btn btn-primary" style="float: right;">
                     </form>
                 </div>
             </div>

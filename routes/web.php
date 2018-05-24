@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
@@ -21,8 +19,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //ADMIN//
 Route::prefix('admin')->group(function() {	
-	Route::get('login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-	Route::post('login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+	Route::get('login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login')->middleware('guest');
+	Route::post('login', 'Auth\AdminLoginController@login')->name('admin.login.submit')->middleware('guest');
 	Route::get('register', 'AdminController@showRegisterForm')->name('admin.register');
 	Route::post('register', 'AdminController@register')->name('admin.register.submit');
 	Route::get('index', 'AdminController@index')->name('admin.index')->middleware('auth:admin');
@@ -49,8 +47,11 @@ Route::prefix('admin')->group(function() {
 //PRINTING SIDE//
 Route::prefix('printing')->group(function() {
 	Route::get('/', 'PrintingController@home')->name('printing.dashboard');
-	Route::get('/login', 'Auth\PrintingLoginController@showLoginForm')->name('printing.login');
-    Route::post('/login', 'Auth\PrintingLoginController@login')->name('printing.login.submit');
+	Route::get('/login', 'Auth\PrintingLoginController@showLoginForm')->name('printing.login')->middleware('guest');
+    Route::post('/login', 'Auth\PrintingLoginController@login')->name('printing.login.submit')->middleware('guest');
+    Route::get('/profile', 'PrintingController@profile')->name('printing.profile')->middleware('auth:printing');
+    Route::get('/profile/edit', 'PrintingController@editProfile')->name('printing.profileEdit')->middleware('auth:printing');
+    Route::post('/profile/edit', 'PrintingController@storeProfile')->name('printing.profileStore')->middleware('auth:printing');;
 
 	Route::get('/layanan', 'PrintingController@layanan')->name('printing.layanan')->middleware('auth:printing');
 
@@ -58,7 +59,7 @@ Route::prefix('printing')->group(function() {
 	Route::post('/layanan', 'PrintingController@storeLayanan')->name('printing.storeLayanan')->middleware('auth:printing');
 
 	Route::get('/jenis/create', 'PrintingController@tambahJenis')->name('printing.tambahJenis')->middleware('auth:printing');
-	Route::post('/jenis', 'PrintingController@storeTambahJenis')->name('printing.storeJenis')->middleware('auth:printing');
+	Route::post('/jenis', 'PrintingController@storeJenis')->name('printing.storeJenis')->middleware('auth:printing');
 
 	Route::get('/layanan/{id}/edit', 'PrintingController@editLayanan')->name('printing.editLayanan')->middleware('auth:printing');
 	Route::post('/layanan/{id}/edit', 'PrintingController@storeEditLayanan')->name('printing.storeEditLayanan')->middleware('auth:printing');

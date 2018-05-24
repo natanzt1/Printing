@@ -46,15 +46,15 @@
                     <!-- End bs-wizard -->
                     <br><br><br><br>
                     <div class="container" align="center">
-                        <h2 style="color: #FFF">Printing {{$jenis_printing->nama}}</h2>
+                        <h2 style="color: #FFF">Printing {{$jenis_printing}}</h2>
                         <form method="post" action="{{route('member.transaksi-3', ['printing_id' => $printing->id])}}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="member_id" value="{{Auth()->user()->id}}">
                             <div class="form-group row">
                                 <label for="Kertas">Kertas</label>
                                 <select class="form-control" style="width: 40%; margin-bottom: 5px" name="kertas">
-                                    @foreach($layanans as $layanan)
-                                    <option value="{{$layanan->id}}">{{$layanan->detail_print->jenis_kertas->nama}} {{$layanan->detail_print->ukuran_kertas->nama}} Harga @ {{$layanan->harga}} </option>
+                                    @foreach($detail_layanans as $layanan)
+                                    <option value="{{$layanan->id}}">{{$layanan->jenis_kertas}} {{$layanan->ukuran_kertas}} Harga @ {{$layanan->harga}} </option>
                                     @endforeach
                                 </select>
                             </div>

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Printing;
 use App\Layanan_Tersedia;
-use App\Detail_print;
+use App\Detail_layanan;
 use App\Jenis_printing;
 use App\Transaksi;
 use App\Detail_transaksi;
@@ -108,54 +108,37 @@ class UserController extends Controller
     public function transaksi(Request $request,$printing_id)
     {
         $printing = Printing::find($printing_id);
-        $layanans = Layanan_Tersedia::where('printing_id', $printing_id)
-                    ->orderBy('detail__print_id')
+        $id = $printing_id;
+        $jenis_layanans = Layanan_Tersedia::where('printing_id', $id)
                     ->get();
-        //$jenis_prints = Jenis Layanan
-        foreach($layanans as $i=>$layanan){
-            $id_detail = $layanan->detail__print_id;
-            $jenis_print_id[$i] = $layanan->detail__print_id;
+        foreach($jenis_layanans as $i => $jenis){
+            $id_jenis[$i]=$jenis->id; 
         }
-        
-        $jenis_prints = Detail_print::WhereIn('id', $jenis_print_id)
-                        ->get();
-        
-        //Mengambil Jenis printing yang ada dalam layanan
-        //$j_p_tersedias = jenis printing tersedia
-        //$j_p mengambil jenis_printing_id yang ada, idnya nanti disimpan $j_p_id
-        $j_p = Detail_print::WhereIn('id', $jenis_print_id) 
-                        ->get(['jenis_printing_id']);
-        foreach($j_p as $i=>$j){
-            $j_p_id[$i] = $j->jenis_printing_id;
-        }
-        $j_p_tersedias = Jenis_printing::WhereIn('id', $j_p_id)->get();
-        return view('/member/transaksi', compact('printing','j_p_tersedias'));
+        return view('/member/transaksi', compact('jenis_layanans','printing'));
     }
 
     public function transaksi2(Request $request,$printing_id)
     {
+        
         $printing = Printing::find($printing_id);
         $jenis_id = $request->jenis_printing;
-        $member = $request->member_id;
-        $jenis_printing = Jenis_printing::find($jenis_id);
-        $tersedias = Layanan_Tersedia::where('printing_id', $printing_id)
-                    ->orderBy('detail__print_id')
+        
+        $layanan = Layanan_Tersedia::find($jenis_id);
+        $jenis_printing = $layanan->jenis_printing;
+
+
+        $printing = Printing::find($printing_id);
+        $id = $printing_id;
+        $jenis_layanans = Layanan_Tersedia::where('printing_id', $id)
                     ->get();
-        foreach($tersedias as $i=> $tersedia){
-            if($tersedia->detail_print->jenis_printing_id == $jenis_id){
-                $tersedia2[$i]=$tersedia->detail_print->id;
-            }
+        foreach($jenis_layanans as $i => $jenis){
+            $id_jenis[$i]=$jenis->id; 
         }
-        $transaksi = Transaksi::where('user_id', $member)
-                    ->where('status_pemesanan', 0)
-                    ->where('printing_id',$printing_id)
-                    ->get();
+        $detail_layanans = Detail_layanan::whereIn('layanan_tersedia_id', $id_jenis)
+                            ->orderBy('layanan_tersedia_id')
+                            ->get();
 
-        $layanans = Layanan_Tersedia::where('printing_id',$printing_id)
-                    ->whereIn('detail__print_id', $tersedia2)
-                    ->get();
-
-        return view('/member/transaksi-2', compact('jenis_printing', 'layanans', 'printing'));
+        return view('/member/transaksi-2', compact('detail_layanans', 'printing', 'jenis_printing'));
     }
     public function transaksi3(Request $request,$printing_id)
     {
@@ -165,13 +148,13 @@ class UserController extends Controller
         $member = $request->member_id;
         $layanan_selected = $request->kertas;
 
-        $layanan = Layanan_Tersedia::find($layanan_selected);
+        $layanan = Detail_layanan::find($layanan_selected);
+        
 
         $transaksi = Transaksi::where('user_id', $member)
                     ->where('printing_id',$printing_id)
                     ->where('status_pemesanan', 0)
                     ->get();
-
         if(empty($transaksi[0])){
             $new_transaksi = new Transaksi();
             $new_transaksi->user_id = $member;
@@ -182,7 +165,7 @@ class UserController extends Controller
                     ->where('status_pemesanan', 0)
                     ->get();
         }
-
+        
         $trx_id = $transaksi[0]->id;
 
         $new_detail = new Detail_transaksi();
@@ -221,20 +204,17 @@ class UserController extends Controller
                     $id = $trx->id;
                     $cart_0[$i] = DB::select("
                         SELECT detail_transaksis.id, jumlah_halaman, jumlah_cetak, file, 
-                            jenis_kertas.nama as jenis_kertas, 
-                            jenis_printings.nama as jenis_printing, 
-                            ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
+                            jenis_kertas, 
+                            jenis_printing, 
+                            ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
                             detail_transaksis.`transaksi_id`
-                        FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                        FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
-                        AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
-                        AND layanan_tersedias.detail__print_id = detail__prints.id
-                        AND detail__prints.jenis_kertas_id = jenis_kertas.id
-                        AND detail__prints.jenis_printing_id = jenis_printings.id
-                        AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
+                        AND detail_transaksis.`detail_layanan_id` = detail_layanans.id
+                        AND detail_layanans.layanan_tersedia_id = layanan_tersedias.id
                         AND transaksis.printing_id = printings.id
                         ORDER BY detail_transaksis.id");    
                 }
@@ -243,54 +223,48 @@ class UserController extends Controller
             $trx_1 = Transaksi::where('user_id',$auth_id)
                         ->where('status_pemesanan',1)
                         ->get();
-            $cart_1[0][0] = 0;
+            $cart_1[0][0] = 0;            
             if(isset($trx_1[0])){
                 foreach($trx_1 as $i=>$trx){
                     $id = $trx->id;
                     $cart_1[$i] = DB::select("
                         SELECT detail_transaksis.id, jumlah_halaman, jumlah_cetak, file, 
-                            jenis_kertas.nama as jenis_kertas, 
-                            jenis_printings.nama as jenis_printing, 
-                            ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
+                            jenis_kertas, 
+                            jenis_printing, 
+                            ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
                             detail_transaksis.`transaksi_id`
-                        FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                       FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
-                        AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
-                        AND layanan_tersedias.detail__print_id = detail__prints.id
-                        AND detail__prints.jenis_kertas_id = jenis_kertas.id
-                        AND detail__prints.jenis_printing_id = jenis_printings.id
-                        AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
+                        AND detail_transaksis.`detail_layanan_id` = detail_layanans.id
+                        AND detail_layanans.layanan_tersedia_id = layanan_tersedias.id
                         AND transaksis.printing_id = printings.id
-                        ORDER BY detail_transaksis.id, printings.id");    
+                        ORDER BY detail_transaksis.id");   
                 }
             }
 
             $trx_2 = Transaksi::where('user_id',$auth_id)
                         ->where('status_pemesanan',2)
                         ->get();
-            $cart_2[0][0] = 0;
+            $cart_2[0][0] = 0;            
             if(isset($trx_2[0])){
                 foreach($trx_2 as $i=>$trx){
                     $id = $trx->id;
                     $cart_2[$i] = DB::select("
                         SELECT detail_transaksis.id, jumlah_halaman, jumlah_cetak, file, 
-                            jenis_kertas.nama as jenis_kertas, 
-                            jenis_printings.nama as jenis_printing, 
-                            ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
+                            jenis_kertas, 
+                            jenis_printing, 
+                            ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
                             detail_transaksis.`transaksi_id`
-                        FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                        FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
-                        AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
-                        AND layanan_tersedias.detail__print_id = detail__prints.id
-                        AND detail__prints.jenis_kertas_id = jenis_kertas.id
-                        AND detail__prints.jenis_printing_id = jenis_printings.id
-                        AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
+                        AND detail_transaksis.`detail_layanan_id` = detail_layanans.id
+                        AND detail_layanans.layanan_tersedia_id = layanan_tersedias.id
                         AND transaksis.printing_id = printings.id
                         ORDER BY detail_transaksis.id");    
                 }
@@ -301,29 +275,25 @@ class UserController extends Controller
                         ->orWhere('status_pemesanan',4)
                         ->get();
 
-            $cart_3[0][0] = 0;
+            $cart_3[0][0] = 0;            
             if(isset($trx_3[0])){
                 foreach($trx_3 as $i=>$trx){
                     $id = $trx->id;
                     $cart_3[$i] = DB::select("
                         SELECT detail_transaksis.id, jumlah_halaman, jumlah_cetak, file, 
-                            jenis_kertas.nama as jenis_kertas, 
-                            jenis_printings.nama as jenis_printing, 
-                            ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
+                            jenis_kertas, 
+                            jenis_printing, 
+                            ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
-                            detail_transaksis.`transaksi_id`,
-                            status_pemesanan
-                        FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                            detail_transaksis.`transaksi_id`
+                        FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
-                        AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
-                        AND layanan_tersedias.detail__print_id = detail__prints.id
-                        AND detail__prints.jenis_kertas_id = jenis_kertas.id
-                        AND detail__prints.jenis_printing_id = jenis_printings.id
-                        AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
+                        AND detail_transaksis.`detail_layanan_id` = detail_layanans.id
+                        AND detail_layanans.layanan_tersedia_id = layanan_tersedias.id
                         AND transaksis.printing_id = printings.id
-                        ORDER BY detail_transaksis.id");    
+                        ORDER BY detail_transaksis.id");   
                 }
             }
 
@@ -331,30 +301,27 @@ class UserController extends Controller
                         ->where('status_pemesanan',5)
                         ->get();
 
-            $cart_4[0][0] = 0;
+            $cart_4[0][0] = 0;            
             if(isset($trx_4[0])){
-                foreach($trx_0 as $i=>$trx){
+                foreach($trx_4 as $i=>$trx){
                     $id = $trx->id;
                     $cart_4[$i] = DB::select("
                         SELECT detail_transaksis.id, jumlah_halaman, jumlah_cetak, file, 
-                            jenis_kertas.nama as jenis_kertas, 
-                            jenis_printings.nama as jenis_printing, 
-                            ukuran_kertas.nama as ukuran_kertas, detail_transaksis.harga,
+                            jenis_kertas, 
+                            jenis_printing, 
+                            ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
                             detail_transaksis.`transaksi_id`
-                        FROM detail_transaksis, transaksis, layanan_tersedias, jenis_kertas, detail__prints, jenis_printings, ukuran_kertas, printings
+                        FROM detail_transaksis, transaksis, layanan_tersedias, printings
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
-                        AND detail_transaksis.`layanan_tersedia_id` = layanan_tersedias.id
-                        AND layanan_tersedias.detail__print_id = detail__prints.id
-                        AND detail__prints.jenis_kertas_id = jenis_kertas.id
-                        AND detail__prints.jenis_printing_id = jenis_printings.id
-                        AND detail__prints.ukuran_kertas_id = ukuran_kertas.id
+                        AND detail_transaksis.`detail_layanan_id` = detail_layanans.id
                         AND transaksis.printing_id = printings.id
                         ORDER BY detail_transaksis.id");    
                 }
             }
+
             return view('/member/cart', compact('auth_id','cart_0','cart_1','cart_2','cart_3','cart_4'));
         }
         else{
@@ -404,7 +371,6 @@ class UserController extends Controller
         $path = "storage/uploaded_file/$auth_id/bukti/$nama_file";
 
         $trx = Transaksi::find($trx_id);
-        $trx->status_pemesanan = 2;
         $trx->bukti_pembayaran = $path;
         $trx->save();
         return redirect(route('member.cart', $auth_id));

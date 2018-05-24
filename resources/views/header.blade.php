@@ -10,9 +10,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="Citytours - Premium site template for city tours agencies, transfers and tickets.">
-    <meta name="author" content="Ansonika">
-    <title>CITY TOURS - City tours and travel site template by Ansonika</title>
+    <meta name="description" content="CetakCetak.com">
+    <title>CetakCetak. Kapanpun. Dimanapun</title>
 
     <!-- Favicons-->
     <link rel="shortcut icon" href="{{ URL::asset('img/favicon.ico') }}" type="image/x-icon">
@@ -192,7 +191,7 @@
                             <li class="submenu">
                                 <a href="javascript:void(0);" class="show-submenu" id="access_link">{{Auth()->user()->nama}} <i class="icon-down-open-mini"></i></a>
                                 <ul>
-                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="{{route('profile.show', Auth()->user()->id)}}">Profile</a></li>
                                     <li><a href="#">Wishlist</a></li>
                                     <li><a href="{{route('member.cart', Auth()->user()->id)}}">Cart</a></li>
                                     <li>
@@ -214,7 +213,7 @@
                             <li class="submenu">
                                 <a href="javascript:void(0);" class="show-submenu" id="access_link">Profile <i class="icon-down-open-mini"></i></a>
                                 <ul>
-                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="{{route('printing.profile')}}">Profile</a></li>
                                     <li><a href="#">Wishlist</a></li>
                                     <li><a href="{{route('printing.transaksi')}}">Transaksi</a></li>
                                     <li>
@@ -256,6 +255,10 @@
                                         <a id="forgot_pw" href="#">Forgot password?</a>
                                         <input type="submit" name="submit" value="Sign in" class="button_drop outline">
                                         <a href="/register" id="sign_up" class="button_drop outline">Sign up</a>
+                                        <div align="center">
+                                            <br>
+                                            <a href="/printing/login" id="sign_up" class="button_drop outline"><button class="btn btn-primary">Login Printing</button></a>
+                                        </div>
                                     </div>
                                 </form>
                             </div><!-- End Dropdown access -->

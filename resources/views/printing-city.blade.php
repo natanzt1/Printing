@@ -16,9 +16,15 @@
 				<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.1s">
 					<div class="tour_container">
 						<div class="img_container">
+							@if(isset($printing->foto))
 							<a href="{{route('everyone.detail', ['kota' => $kota, 'nama' => $printing->nama])}}">
-								<img src="{{ URL::asset('img/tour_box_1.jpg') }}" width="800" height="533" class="img-responsive" alt="image">
+								<img src="{{ URL::asset($printing->foto) }}" class="img-responsive" style="min-height: 300px; max-height: 350px">
 							</a>
+							@else
+							<a href="{{route('everyone.detail', ['kota' => $kota, 'nama' => $printing->nama])}}">
+								<img src="{{ URL::asset('img/tour_box_1.jpg') }}" style="min-height: 300px;max-height: 350px" class="img-responsive" alt="image">
+							</a>
+							@endif
 						</div>
 						<div class="tour_title">
 							<h3><strong><a href="{{route('everyone.detail', ['kota' => $kota, 'nama' => $printing->nama])}}">{{$printing->nama}}</a></strong></h3>

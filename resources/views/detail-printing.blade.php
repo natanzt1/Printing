@@ -59,8 +59,8 @@
                                 @guest
                                 <div class="col-md-3 col-sm-3">
                                     <h5>Ingin Menambahkan Printing ini ke 
-                                        <br><span>Daftar Favoritemu? Yuk login dulu 
-                                        <i class="icon-smile voted"></i></span>
+                                        <br><span>Daftar Favoritemu dan Melakukan Transaksi?</span> Yuk login dulu 
+                                        <i class="icon-smile voted"></i>
                                     </h5>
                                 </div>
                                 @endguest
@@ -77,69 +77,50 @@
 
                         <div id="layanan" class="tab-pane fade">
                             <ul class="nav nav-tabs font-12pt">
-                            @foreach($j_p_tersedias as $i=>$j_p_tersedia)
-                                @if($i==0)
-                                <li class="active"><a data-toggle="tab" href="#{{$i}}">{{$j_p_tersedia->nama}}</a></li>
-                                @else
-                                <li><a data-toggle="tab" href="#{{$i}}">{{$j_p_tersedia->nama}}</a></li>
-                                @endif
-                            @endforeach <!--endforeach utk $j_p_tersedias-->
-                            </ul>
-                            <div class="tab-content">
-                                @for($j=0;$j<$counter;$j++)
-                                @if($j==0)
-                                <div id="{{$j}}" class="tab-pane fade in active container">
-                                    <div style="width: 80% ; margin-left: 2.5%" align="center">
-                                        <table class="table">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                  <th scope="col">No</th>
-                                                  <th scope="col">Jenis Kertas</th>
-                                                  <th scope="col">Ukuran Kertas</th>
-                                                  <th scope="col">Harga</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @for($k=0;$k<$counter_cus[$j];$k++)
-                                                <tr>
-                                                  <th scope="row">{{$k+1}}</th>
-                                                  <td>{{$layanan_tersedia[$j][$k]->jenis_kertas->nama}}</td>
-                                                  <td>{{$layanan_tersedia[$j][$k]->ukuran_kertas->nama}}</td>
-                                                  <td>Rp {{$harga[$j][$k][0]->harga}}</td>
-                                                </tr>
-                                                @endfor
-                                            </tbody>
-                                        </table>
-                                    </div>
+                        @foreach($jenis_layanans as $i=>$layanan)
+                            @if($i==0)
+                            <li class="active"><a data-toggle="tab" href="#{{$layanan->id}}">{{$layanan->jenis_printing}}</a></li>
+                            @else
+                            <li><a data-toggle="tab" href="#{{$layanan->id}}">{{$layanan->jenis_printing}}</a></li>
+                            @endif
+                        @endforeach
+                        </ul>
+
+                        <div class="tab-content">
+                            @foreach($jenis_layanans as $j=>$layanan)
+                            @if($j==0)
+                            <div id="{{$layanan->id}}" class="tab-pane fade in active">
+
+                            @else
+                            <div id="{{$layanan->id}}" class="tab-pane fade">
+                            @endif
+                                <div style="width: 90% ; margin-left: 5%" align="center">
+                                    <h4>
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                              <th scope="col">Jenis Kertas</th>
+                                              <th scope="col">Ukuran Kertas</th>
+                                              <th scope="col">Harga</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($detail_layanans as $detail)
+                                        @if($detail->layanan_tersedia_id == $layanan->id)
+                                            <tr>
+                                                <td>{{$detail->jenis_kertas}}</td>
+                                                <td>{{$detail->ukuran_kertas}}</td>
+                                                <td>Rp {{$detail->harga}}</td>
+                                            </tr>
+                                        @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                    <h4>
                                 </div>
-                                @else
-                                <div id="{{$j}}" class="tab-pane fade container">
-                                    <div style="width: 80% ; margin-left: 2.5%" align="center">
-                                        <table class="table">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                  <th scope="col">No</th>
-                                                  <th scope="col">Jenis Kertas</th>
-                                                  <th scope="col">Ukuran Kertas</th>
-                                                  <th scope="col">Harga</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @for($k=0;$k<$counter_cus[$j];$k++)
-                                                <tr>
-                                                  <th scope="row">{{$k +1}}</th>
-                                                  <td>{{$layanan_tersedia[$j][$k]->jenis_kertas->nama}}</td>
-                                                  <td>{{$layanan_tersedia[$j][$k]->ukuran_kertas->nama}}</td>
-                                                  <td>Rp {{$harga[$j][$k][0]->harga}}</td>
-                                                </tr>
-                                                @endfor
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                @endif
-                                @endfor
                             </div>
+                            @endforeach
+                        </div>
                         </div>
                     </div>
                 </div>

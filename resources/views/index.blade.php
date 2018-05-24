@@ -230,7 +230,7 @@ function showPosition(position) {
                             <li class="submenu">
                                 <a href="javascript:void(0);" class="show-submenu" id="access_link">Profile <i class="icon-down-open-mini"></i></a>
                                 <ul>
-                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="{{route('printing.profile')}}">Profile</a></li>
                                     <li><a href="#">Wishlist</a></li>
                                     <li><a href="{{route('printing.transaksi')}}">Transaksi</a></li>
                                     <li>
@@ -269,9 +269,12 @@ function showPosition(position) {
                                         <div class="form-group">
                                             <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
                                         </div>
-                                        <a id="forgot_pw" href="#">Forgot password?</a>
                                         <input type="submit" name="submit" value="Sign in" class="button_drop outline">
                                         <a href="/register" id="sign_up" class="button_drop outline">Sign up</a>
+                                        <div align="center">
+                                            <br>
+                                            <a href="/printing/login"><button class="btn btn-primary">Login Printing</button></a>
+                                        </div>
                                     </div>
                                 </form>
                             </div><!-- End Dropdown access -->

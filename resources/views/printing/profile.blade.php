@@ -1,70 +1,51 @@
 @extends('header')
 
+
 @section('content')
+    <br><br>
 	<main>
-		<div id="position">
-			<div class="container">
-				<ul>
-					<li><a href="#">Home</a>
-					</li>
-					<li><a href="#">Category</a>
-					</li>
-					<li>Page active</li>
-				</ul>
-			</div>
-		</div>
-		<!-- End Position -->
-		<div class="container margin_60">
-            <section id="hero_2">
-                <div class="intro_title animated fadeInDown">
-                    <h1>Transaksi di {{$printing->nama}}</h1>
-                    <div class="bs-wizard">
-                        <div class="col-xs-4 bs-wizard-step active">
-                            <div class="text-center bs-wizard-stepnum">Pilih Jenis Printing</div>
-                            <div class="progress">
-                                <div class="progress-bar"></div>
-                            </div>
-                            <a href="#" class="bs-wizard-dot"></a>
-                        </div>
-
-                        <div class="col-xs-4 bs-wizard-step disabled">
-                            <div class="text-center bs-wizard-stepnum">Lengkapi Data</div>
-                            <div class="progress">
-                                <div class="progress-bar"></div>
-                            </div>
-                            <a href="payment_hotel.html" class="bs-wizard-dot"></a>
-                        </div>
-
-                        <div class="col-xs-4 bs-wizard-step disabled">
-                            <div class="text-center bs-wizard-stepnum">Data Diterima</div>
-                            <div class="progress">
-                                <div class="progress-bar"></div>
-                            </div>
-                            <a href="confirmation_hotel.html" class="bs-wizard-dot"></a>
-                        </div>
-                    </div>
-                    <!-- End bs-wizard -->
-                    <br><br><br><br>
-                    <div class="container" align="center">
-                        <h2 style="color: #FFF">Pilih Jenis Printing</h2>
-                        <form method="post" action="{{route('member.transaksi-2', ['printing_id' => $printing->id])}}">
-                            @csrf
-                            <input type="hidden" name="member_id" value="{{Auth()->user()->id}}">
-                            <select class="form-control" style="width: 40%" name="jenis_printing">
-                                @foreach($jenis_layanans as $j_p)
-                                <option value="{{$j_p->id}}">{{$j_p->jenis_printing}}</option>
-                                @endforeach
-                            </select>
-                            <br>
-                            <input type="submit" class="btn btn-primary" value="Lanjutkan">
-                        </form>
-                    </div>
-                    <br><br><br><br><br><br>
+		<div class="margin_60 container" style="padding: 5%">
+            <div class="main_title">
+                <h2>Profile <span>Anda</span> </h2>
+            </div>
+			<div class="row" style="background-color: #FFF ; padding: 5%">
+                <div class="col-md-6 col-sm-6">
+                    <h3><span>Data Diri</span></h3>
+                    <ul id="profile_summary" class="font-12pt">
+                        @if(isset($profile->nama))
+                        <li>
+                            Nama <span>{{$profile->nama}}</span>
+                        </li>
+                        @else
+                        <li>
+                            Nama <span style="color: #e04f67">Lengkapi Data Anda.</span>
+                        </li>
+                        @endif
+                        <li>
+                            Email <span>{{$profile->email}}</span>
+                        </li>
+                        <li>
+                            Username <span>{{$profile->username}}</span>
+                        </li>
+                        <li>
+                            Deskripsi <span>{{$profile->deskripsi}}</span>
+                        </li>
+                    </ul>
                 </div>
-                <!-- End intro-title -->
-            </section>
-			<hr>
+                <div class="col-md-6 col-sm-6">
+                    @if($profile->foto == null)
+                    <img src="{{ URL::asset('storage/member_profile/avatar_default.png') }}" alt="Image" class="img-responsive styled profile_pic" style="min-height: 200px; max-width: 500px; max-height: 250px">
+                    @else
+                    <img src="{{ URL::asset($profile->foto) }}" alt="Image" class="img-responsive styled profile_pic" style="min-height: 200px; max-width: 500px; max-height: 250px">
+                    @endif
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <a href="/printing/profile/edit"><button type="button" class="btn btn-primary">Edit Profile</button></a>
+                </div>
+            </div>
+            <div class="divider"></div>
 		</div>
+			<!-- end container -->
 	</main>
 	<!-- End main -->
 
@@ -74,7 +55,7 @@
                 <div class="col-md-4 col-sm-3">
                     <h3>Need help?</h3>
                     <a href="tel://004542344599" id="phone">+45 423 445 99</a>
-                    <a href="http://www.ansonika.com/cdn-cgi/l/email-protection#066e636a7646656f727f72697374752865696b" id="email_footer"><span class="__cf_email__" data-cfemail="84ece1e8f4c4e7edf0fdf0ebf1f6f7aae7ebe9">[email&#160;protected]</span></a>
+                    <a href="http://www.ansonika.com/cdn-cgi/l/email-protection#a9c1ccc5d9e9cac0ddd0ddc6dcdbda87cac6c4" id="email_footer"><span class="__cf_email__" data-cfemail="452d20293505262c313c312a3037366b262a28">[email&#160;protected]</span></a>
                 </div>
                 <div class="col-md-3 col-sm-3">
                     <h3>About</h3>
@@ -146,4 +127,5 @@
 			</button>
 		</form>
 	</div><!-- End Search Menu -->
+
 @endsection
