@@ -77,6 +77,7 @@
 
                         <div id="layanan" class="tab-pane fade">
                             <ul class="nav nav-tabs font-12pt">
+                        @if(isset($jenis_layanans[0]))
                         @foreach($jenis_layanans as $i=>$layanan)
                             @if($i==0)
                             <li class="active"><a data-toggle="tab" href="#{{$layanan->id}}">{{$layanan->jenis_printing}}</a></li>
@@ -84,15 +85,23 @@
                             <li><a data-toggle="tab" href="#{{$layanan->id}}">{{$layanan->jenis_printing}}</a></li>
                             @endif
                         @endforeach
+                        @else
+                            <li class="active"><a data-toggle="tab" href="#1">Belum Ada</a></li>
+                        @endif
                         </ul>
 
                         <div class="tab-content">
                             @foreach($jenis_layanans as $j=>$layanan)
-                            @if($j==0)
-                            <div id="{{$layanan->id}}" class="tab-pane fade in active">
+                            @if(isset($jenis_layanans[0]))
+                                @if($j==0)
+                                    <div id="{{$layanan->id}}" class="tab-pane fade in active">
+
+                                @else
+                                    <div id="{{$layanan->id}}" class="tab-pane fade">
+                                @endif
 
                             @else
-                            <div id="{{$layanan->id}}" class="tab-pane fade">
+                                <div id="1" class="tab-pane fade in active">
                             @endif
                                 <div style="width: 90% ; margin-left: 5%" align="center">
                                     <h4>
@@ -105,6 +114,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        @if(isset($detail_layanans))
                                         @foreach($detail_layanans as $detail)
                                         @if($detail->layanan_tersedia_id == $layanan->id)
                                             <tr>
@@ -114,6 +124,7 @@
                                             </tr>
                                         @endif
                                         @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                     <h4>

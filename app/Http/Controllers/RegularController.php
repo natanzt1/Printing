@@ -52,9 +52,11 @@ class RegularController extends Controller
         foreach($jenis_layanans as $i => $jenis){
             $id_jenis[$i]=$jenis->id; 
         }
-        $detail_layanans = Detail_layanan::whereIn('layanan_tersedia_id', $id_jenis)
+        if(isset($id_jenis[0])){
+            $detail_layanans = Detail_layanan::whereIn('layanan_tersedia_id', $id_jenis)
                             ->orderBy('layanan_tersedia_id')
                             ->get();
+        }   
         
         return view('detail-printing', compact('kota', 'printings', 'printing', 'jenis_layanans','detail_layanans', 'printing_id'));
     }
