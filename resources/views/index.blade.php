@@ -228,10 +228,10 @@ function showPosition(position) {
                             @endauth
                             @auth('printing')
                             <li class="submenu">
-                                <a href="javascript:void(0);" class="show-submenu" id="access_link">Profile <i class="icon-down-open-mini"></i></a>
+                                <a href="javascript:void(0);" class="show-submenu" id="access_link">PRINTING <i class="icon-down-open-mini"></i></a>
                                 <ul>
                                     <li><a href="{{route('printing.profile')}}">Profile</a></li>
-                                    <li><a href="#">Wishlist</a></li>
+                                    <li><a href="{{route('printing.layanan')}}">Layanan</a></li>
                                     <li><a href="{{route('printing.transaksi')}}">Transaksi</a></li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"

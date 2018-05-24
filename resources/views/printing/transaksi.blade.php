@@ -56,7 +56,7 @@
                                                     <p>{{$trx0->jumlah_cetak}}</p>
                                                 </td>
                                                 <td>
-                                                    <form action="{{route('member.download')}}" method="POST">
+                                                    <form action="{{route('printing.download')}}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="path" value="{{$trx0->file}}">
                                                         <input type="submit" value="Download" class="btn btn-primary">

@@ -47,6 +47,8 @@ Route::prefix('admin')->group(function() {
 //PRINTING SIDE//
 Route::prefix('printing')->group(function() {
 	Route::get('/', 'PrintingController@home')->name('printing.dashboard');
+	Route::get('/register', 'PrintingController@create')->name('printing.register');
+	
 	Route::get('/login', 'Auth\PrintingLoginController@showLoginForm')->name('printing.login')->middleware('guest');
     Route::post('/login', 'Auth\PrintingLoginController@login')->name('printing.login.submit')->middleware('guest');
     Route::get('/profile', 'PrintingController@profile')->name('printing.profile')->middleware('auth:printing');
@@ -67,6 +69,7 @@ Route::prefix('printing')->group(function() {
 	Route::post('/layanan/{id}/hapus', 'PrintingController@hapusLayanan')->name('printing.hapusLayanan')->middleware('auth:printing');
 
 	Route::get('/transaksi', 'PrintingController@Transaksi')->name('printing.transaksi')->middleware('auth:printing');
+	Route::post('/download', 'PrintingController@download')->name('printing.download')->middleware('auth:printing');;
 	Route::post('/transaksi/{trx_id}', 'PrintingController@trxSelesai')->name('printing.trx_selesai')->middleware('auth:printing');
 });
 

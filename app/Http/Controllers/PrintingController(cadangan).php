@@ -23,25 +23,7 @@ class PrintingController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth:printing');
-    }
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function home()
-    {
-        return view('printing');
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('register-printing');
@@ -53,6 +35,19 @@ class PrintingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    
+    public function home()
+    {
+        return redirect(route('everyone.index'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
     public function store(Request $request)
     {
         $api_key = "AIzaSyBPFFbLQcq3u3L9BqtaKlcyEPs-h4j2RGM";
@@ -327,5 +322,12 @@ class PrintingController extends Controller
         $printing->save();
 
         return redirect(route('printing.profile'));
+    }
+
+    public function download(Request $request)
+    {
+        $path = $request->path;
+        return response()->download($path);
+        return redirect(route('printing.transaksi'));
     }
 }

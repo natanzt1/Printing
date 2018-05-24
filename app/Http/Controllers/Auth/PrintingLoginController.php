@@ -11,7 +11,7 @@ class PrintingLoginController extends Controller
     }
     public function showLoginForm()
     {
-      return view('printing.printing-login');
+      return view('printing.login');
     }
     public function login(Request $request)
     {
