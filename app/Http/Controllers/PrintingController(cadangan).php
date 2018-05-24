@@ -7,7 +7,7 @@ use App\Transaksi;
 use App\Detail_transaksi;
 use App\Printing;
 use App\Layanan_tersedia;
-use App\Detail_print;
+use App\Detail_layanan;
 use App\Jenis_printing;
 use Illuminate\Http\Request;
 
@@ -96,92 +96,102 @@ class PrintingController extends Controller
         return redirect('/home');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Printing  $printing
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Printing $printing)
+    public function layanan()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Printing  $printing
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Printing $printing)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Printing  $printing
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Printing $printing)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Printing  $printing
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Printing $printing)
-    {
-        //
-    }
-
-    /**
-     * Edit Layanan Si Printing
-     *
-     */
-    public function layananTersedia($id)
-    {
+        $id = Auth()->printing()->id;        
         $printing = Printing::find($id);
-        $layanans = Layanan_Tersedia::where('printing_id', $id)
-                    ->orderBy('detail__print_id')
+        $jenis_layanans = Layanan_Tersedia::where('printing_id', $id)
                     ->get();
-        foreach($layanans as $i=>$layanan){
-            $id_detail = $layanan->detail__print_id;
-            $jenis = Detail_print::find($id_detail);
-            $jenis_print_id[$i] = $jenis->id;
+        foreach($jenis_layanans as $i => $jenis){
+            $id_jenis[$i]=$jenis->id; 
         }
-         
-        $jenis_prints = Detail_print::WhereIn('id', $jenis_print_id)->get();
-        /*$c = 0; //Counter utk menghitung jumlah layanan tersedia.
-        $jeniss_p[0] = $jenis_prints[0];
-        $jeniss_p_id[0] = $jenis_prints_id[0];
-        for($a=1;$a<=$i;$a++){
-            if($jeniss_p[$c] != $jenis_prints[$a]){
-                $c++;
-                $jeniss_p[$c] = $jenis_prints[$a];
-                $jeniss_p_id[$c] = $jenis_prints_id[$a];
-            }
-        }*/
-
-        return view('printing/layanan-tersedia', compact('printing', 'jenis_prints', 'id', 'layanans'));
+        $detail_layanans = Detail_layanan::whereIn('layanan_tersedia_id', $id_jenis)
+                            ->orderBy('layanan_tersedia_id')
+                            ->get();
+        return view('printing/layanan-tersedia', compact('printing', 'jenis_layanans','detail_layanans','message'));
     }
-    public function tambahLayananTersedia($id)
-    {
-        $printing = Printing::find($id);
-        $exists = Layanan_tersedia::where('printing_id', $id)->get();
-        foreach($exists as $i=>$exist){
-            $exist_id[$i] = $exist->detail__print_id;
-        }
 
-        //Mengambil data Detail Print yang blm ada di layanan_printing
-        $details = Detail_print::whereNotIn('id', $exist_id)->get(); 
-        return view('/printing/create-layanan-tersedia', compact('details','id', 'printing'));
+    public function editLayanan($id)
+    {
+        $layanan = Detail_layanan::find($id);
+    }
+
+    public function storeEditLayanan($id)
+    {
+        
+    }
+
+    public function hapusLayanan($id)
+    {
+        $layanan = Detail_layanan::find($id);
+        $flight->delete();
+    }
+
+    public function tambahLayanan()
+    {
+        $id = Auth()->printing()->id;   
+        $jenis_layanans = Layanan_Tersedia::where('printing_id', $id)
+                    ->get();
+        $message = "";
+        return view('/printing/create-layanan', compact('jenis_layanans'));
+    }
+
+    public function storeLayanan(Request $req)
+    {
+        $ukuran = $req->ukuran_kertas;
+        $jenis_kertas = $req->jenis_kertas;
+        $jenis_printing = $req->jenis_printing;
+        $harga = $req->harga;
+        $exist = Detail_layanan::where('ukuran_kertas',$ukuran)
+                ->where('jenis_kertas',$jenis_kertas)
+                ->where('layanan_tersedia_id',$jenis_printing)
+                ->get();
+        if(isset($exist[0])) {
+            $message = "Layanan sudah ada, inputkan layanan baru yang belum terdaftar.";
+            $id = Auth()->printing()->id;   
+            $jenis_layanans = Layanan_Tersedia::where('printing_id', $id)
+                        ->get();
+            return view('/printing/create-layanan', compact('jenis_layanans','message'));
+        }
+        else {
+            $layanan = new Detail_layanan();
+            $layanan->layanan_tersedia_id = $jenis_printing;
+            $layanan->jenis_kertas = $jenis_kertas;
+            $layanan->ukuran_kertas = $ukuran;
+            $layanan->harga = $harga;
+            $layanan->save();
+            return redirect(route('printing.layanan'));
+        }
+    }
+
+    public function tambahJenis()
+    {
+        $id = Auth()->printing()->id;   
+        $jenis_layanans = Layanan_Tersedia::where('printing_id', $id)
+                    ->get();
+        return view('/printing/create-jenis', compact('jenis_layanans'));
+    }
+
+    public function storeJenis($id)
+    {
+        $jenis_printing = $req->jenis_printing;
+        $id = Auth()->printing()->id;
+        $exist = Layanan_Tersedia::where('jenis_printing',$jenis_printing)
+                ->get();
+
+        if(isset($exist[0])) {
+            $message = "Jenis Printing sudah ada, inputkan Jenis Printing baru yang belum terdaftar.";
+            $jenis_layanans = Layanan_Tersedia::where('printing_id', $id)
+                        ->get();
+            return view('/printing/edit-layanan', compact('jenis_layanans','message'));
+        }
+        else {
+            $layanan = new Layanan_Tersedia();
+            $layanan->jenis_printing = $jenis_printing;
+            $layanan->printing_id = $id;
+            $layanan->save();
+            return redirect(route('printing.tambahLayanan'));
+        }
     }
 
     public function storeTambahLayananTersedia($id, Request $request)

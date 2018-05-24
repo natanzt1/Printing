@@ -51,9 +51,20 @@ Route::prefix('printing')->group(function() {
 	Route::get('/', 'PrintingController@home')->name('printing.dashboard');
 	Route::get('/login', 'Auth\PrintingLoginController@showLoginForm')->name('printing.login');
     Route::post('/login', 'Auth\PrintingLoginController@login')->name('printing.login.submit');
-	Route::get('/layanan/{id}', 'PrintingController@layananTersedia')->middleware('auth:printing');
-	Route::get('/layanan/{id}/create', 'PrintingController@tambahLayananTersedia')->middleware('auth:printing');
-	Route::post('/layanan/{id}', 'PrintingController@storeTambahLayananTersedia')->middleware('auth:printing');
+
+	Route::get('/layanan', 'PrintingController@layanan')->name('printing.layanan')->middleware('auth:printing');
+
+	Route::get('/layanan/create', 'PrintingController@tambahLayanan')->name('printing.tambahLayanan')->middleware('auth:printing');
+	Route::post('/layanan', 'PrintingController@storeLayanan')->name('printing.storeLayanan')->middleware('auth:printing');
+
+	Route::get('/jenis/create', 'PrintingController@tambahJenis')->name('printing.tambahJenis')->middleware('auth:printing');
+	Route::post('/jenis', 'PrintingController@storeTambahJenis')->name('printing.storeJenis')->middleware('auth:printing');
+
+	Route::get('/layanan/{id}/edit', 'PrintingController@editLayanan')->name('printing.editLayanan')->middleware('auth:printing');
+	Route::post('/layanan/{id}/edit', 'PrintingController@storeEditLayanan')->name('printing.storeEditLayanan')->middleware('auth:printing');
+
+	Route::post('/layanan/{id}/hapus', 'PrintingController@hapusLayanan')->name('printing.hapusLayanan')->middleware('auth:printing');
+
 	Route::get('/transaksi', 'PrintingController@Transaksi')->name('printing.transaksi')->middleware('auth:printing');
 	Route::post('/transaksi/{trx_id}', 'PrintingController@trxSelesai')->name('printing.trx_selesai')->middleware('auth:printing');
 });
