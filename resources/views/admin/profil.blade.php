@@ -21,6 +21,9 @@
                         <li>
                             <a href="{{route('admin.getBannedPrinting')}}"><i class="fa fa-address-card"></i> Banned Printing</a>
                         </li>
+                        <li>
+                            <a href="{{route('admin.getHistoryTrx')}}"><i class="fa fa-address-card"></i> History Transaksi</a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -32,12 +32,6 @@
             </div>
             <a id="mobile_btn" class="mobile_btn pull-left" href="#sidebar"><i class="fa fa-bars" aria-hidden="true"></i></a>
             <ul class="nav navbar-nav navbar-right user-menu pull-right">
-                <li class="dropdown hidden-xs">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o"></i> <span class="badge bg-primary pull-right">200</span></a>
-                </li>
-                <li class="dropdown hidden-xs">
-                    <a href="javascript:;" id="open_msg_box" class="hasnotifications"><i class="fa fa-comment-o"></i> <span class="badge bg-primary pull-right">1000</span></a>
-                </li>
                 <li class="dropdown">
                     <a href="profile.html" class="dropdown-toggle user-link" data-toggle="dropdown" title="Admin">
                         <span class="user-img"><img class="img-circle" src="{{URL::asset('admin/img/user.jpg')}}" width="40" alt="Admin">

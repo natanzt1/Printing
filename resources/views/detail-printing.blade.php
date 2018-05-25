@@ -34,7 +34,13 @@
                         <div id="detail" class="tab-pane fade in active">
                             <div class="row">
                                 <div class="col-md-4 col-sm-4">
-                                    <img src="{{ URL::asset('img/tour_box_1.jpg') }}" alt="Image" class="img-responsive styled">
+                                    @if(isset($printing->foto))
+                                        <img src="{{ URL::asset($printing->foto) }}" class="img-responsive" style="min-height: 300px; max-height: 350px">
+                                    </a>
+                                    @else
+                                        <img src="{{ URL::asset('img/tour_box_1.jpg') }}" style="min-height: 300px;max-height: 350px" class="img-responsive" alt="image">
+                                    </a>
+                                    @endif
                                 </div>
                                 
                                 <div class="col-md-5 col-sm-5" style="word-wrap:break-word">

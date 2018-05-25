@@ -21,6 +21,9 @@
                         <li>
                             <a href="{{route('admin.getBannedPrinting')}}"><i class="fa fa-address-card"></i> Banned Printing</a>
                         </li>
+                        <li>
+                            <a href="{{route('admin.getHistoryTrx')}}"><i class="fa fa-address-card"></i> History Transaksi</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -49,6 +52,7 @@
                                 <td>{{$user->username}}</td>
                                 @if($user->status==0)
                                 <td>Belum Konfirmasi</td>
+                                <td><a href="{{route('admin.restore-member', $user->id)}}" title="Edit"><i class="fa fa-pencil m-r-5"></i> Aktifkan</a></td>
                                 @elseif($user->status==1)
                                 <td>Aktif</td>
                                 <td><a href="{{route('admin.banned-member', $user->id)}}" title="Delete"><i class="fa fa-trash-o m-r-5"></i> Banned</a></td>

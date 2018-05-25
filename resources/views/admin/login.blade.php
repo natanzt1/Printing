@@ -14,7 +14,7 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}">
+                                        <input id="email" type="input" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}">
                                     </div>
                                     <div class="form-group">
                                         <label>Password</label>

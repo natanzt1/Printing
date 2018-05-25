@@ -21,6 +21,9 @@
                         <li>
                             <a href="{{route('admin.getBannedPrinting')}}"><i class="fa fa-address-card"></i> Banned Printing</a>
                         </li>
+                        <li class="active">
+                            <a href="{{route('admin.getHistoryTrx')}}"><i class="fa fa-address-card"></i> History Transaksi</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -29,7 +32,7 @@
             <div class="content container-fluid">
                 <div class="row">
                     <div align="center">
-                        <h1><span>Transaksi Menunggu Konfirmasi Pembayaran</span></h1>    
+                        <h1><span>{{$message}}</span></h1>    
                     </div>
                     <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
@@ -38,7 +41,7 @@
                                 <th>Nama Printing</th>
                                 <th>Tanggal Order</th>
                                 <th>Bukti Pembayaran</th>
-                                <th>Action</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,15 +50,31 @@
                                 <td>{{$trx->user->nama}}</td>
                                 <td>{{$trx->printing->nama}}</td>
                                 <td>{{$trx->tgl_order}}</td>
-                                <td>{{$trx->bukti_pembayaran}}</td>
+                                <td><img src="{{URL::asset($trx->bukti_pembayaran)}}" width="200px"></td>
+                                @if($trx->status_pemesanan == 2)
                                 <td>
-                                    <li>
+                                    <ul>
+                                        <li>
                                         <a href="{{route('admin.konfirmasiTrx', $trx->id)}}" title="konfirmasi"><i class="fa fa-pencil m-r-5"></i> Konfirmasi</a>    
-                                    </li>
-                                    <li>
-                                        <a href="{{route('admin.tolakTrx', $trx->id)}}" title="tolak"><i class="fa fa-trash-o m-r-5"></i> Tolak</a>        
-                                    </li>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('admin.tolakTrx', $trx->id)}}" title="tolak"><i class="fa fa-trash-o m-r-5"></i> Tolak</a>        
+                                        </li>
+                                    </ul>
                                 </td>
+                                @elseif($trx->status_pemesanan == 3)
+                                <td></td>
+                                <td>Terkonfirmasi</td>
+                                @elseif($trx->status_pemesanan == 4)
+                                <td></td>
+                                <td>Selesai</td>
+                                @elseif($trx->status_pemesanan == 5)
+                                <td></td>
+                                <td>Sudah Dirating</td>
+                                @elseif($trx->status_pemesanan == 6)
+                                <td></td>
+                                <td>Dibatalkan</td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

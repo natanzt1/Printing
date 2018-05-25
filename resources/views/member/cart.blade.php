@@ -160,7 +160,7 @@
                                             <tr>
                                                 <td><td><td><td><td>
                                                     <td>
-                                                        <a href="#"><button class="btn btn-danger">Batalkan Pesanan</button></a>
+                                                        <a href="{{route('member.batal', $cart[0]->transaksi_id)}}"><button class="btn btn-danger">Batalkan Pesanan</button></a>
                                                     </td>   
                                                 </td></td></td></td>
                                             </tr>
@@ -278,21 +278,43 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                        @if($trx0->status_pemesanan == 3)
-                                            <tr><td></td></tr>
-                                            <tr>
-                                                <td><td><td>
-                                                    <td>
-                                                        <h4>Total Transaksi</h4>
-                                                    </td>
-                                                    <td>
-                                                        <h4><strong>Rp{{$total}}</strong></h4>
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{route('member.getrating', $cart[0]->transaksi_id)}}"><button class="btn btn-success">Nilai Sekarang</button></a>
-                                                    </td>   
-                                                </td></td></td>
-                                            </tr>
+                                        @if($trx0->status_pemesanan == 4)
+                                                <tr><td></td></tr>
+                                                <tr>
+                                                    <td><td><td>
+                                                        <td>
+                                                            <h4>Total Transaksi</h4>
+                                                        </td>
+                                                        <td>
+                                                            <h4><strong>Rp{{$total}}</strong></h4>
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{route('member.getrating', $cart[0]->transaksi_id)}}"><button class="btn btn-success">Nilai Sekarang</button></a>
+                                                        </td>   
+                                                    </td></td></td>
+                                                </tr>
+                                        @else
+                                                <tr><td></td></tr>
+                                                <tr>
+                                                    <td><td><td>
+                                                        <td>
+                                                            <h4>Total Transaksi</h4>
+                                                        </td>
+                                                        <td>
+                                                            <h4><strong>Rp{{$total}}</strong></h4>
+                                                        </td>
+                                                        <td>
+                                                            @for($star=0 ; $star< 5; $star++ )
+                                                            @if($star<($trx0->rating))
+                                                                <i class="icon-star voted"></i>
+                                                            @else
+                                                                <i class=" icon-star-empty"></i>
+                                                            @endif
+                                                        @endfor
+                                                        ({{$trx0->rating}} of 5)
+                                                        </td>   
+                                                    </td></td></td>
+                                                </tr>   
                                         @endif
                             @else
                                             <td><td><td><td><td><td><td>

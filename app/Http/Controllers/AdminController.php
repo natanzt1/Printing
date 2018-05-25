@@ -80,7 +80,7 @@ class AdminController extends Controller
     public function index()
     {
         $admins = Admin::where('status',0)->get();
-        $trx_bayars = Transaksi::where('status_pemesanan', 3)->get();
+        $trx_bayars = Transaksi::where('status_pemesanan', 2)->get();
         $printings = Printing::where('status',0)->get();
         $printings_aktif = Printing::where('status',1)->get();
         $users_aktif = User::where('status', 1)->get();
@@ -171,14 +171,22 @@ class AdminController extends Controller
 
     public function getTransaksi()
     {
-        $trx_bayars = Transaksi::where('status_pemesanan', 3)->get();
-        return view('admin.transaksi', compact('trx_bayars'));
+        $message = "History Transaksi";
+        $trx_bayars = Transaksi::where('status_pemesanan', 2)->get();
+        return view('admin.transaksi', compact('trx_bayars','message'));
+    }
+
+    public function getHistoryTrx()
+    {
+        $message = "History Transaksi";
+        $trx_bayars = Transaksi::where('status_pemesanan','>','1')->get();
+        return view('admin.transaksi', compact('trx_bayars','message'));
     }
 
     public function konfirmasiTrx($id)
     {
         $trx = Transaksi::find($id);
-        $trx->status_pemesanan = 4;
+        $trx->status_pemesanan = 3;
         $trx->save();
         return redirect(route('admin.getTransaksi'));
     }

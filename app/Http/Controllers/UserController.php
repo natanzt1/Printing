@@ -170,7 +170,7 @@ class UserController extends Controller
 
         $new_detail = new Detail_transaksi();
         $new_detail->transaksi_id = $trx_id;
-        $new_detail->layanan_tersedia_id = $layanan_selected;
+        $new_detail->detail_layanan_id = $layanan_selected;
         $new_detail->jumlah_halaman = $jumlah_halaman;
         $new_detail->jumlah_cetak = $jumlah_cetak;
         $new_detail->harga = $layanan->harga;
@@ -194,7 +194,7 @@ class UserController extends Controller
     {
         $auth_id = Auth()->user()->id;
         if($member_id == $auth_id){
-            $trx_0 = Transaksi::where('user_id',12)
+            $trx_0 = Transaksi::where('user_id',$auth_id)
                         ->where('status_pemesanan',0)
                         ->get();
 
@@ -219,7 +219,7 @@ class UserController extends Controller
                         ORDER BY detail_transaksis.id");    
                 }
             }
-
+            
             $trx_1 = Transaksi::where('user_id',$auth_id)
                         ->where('status_pemesanan',1)
                         ->get();
@@ -234,7 +234,8 @@ class UserController extends Controller
                             ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
-                            detail_transaksis.`transaksi_id`
+                            detail_transaksis.`transaksi_id`,
+                            bukti_pembayaran
                        FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
@@ -273,6 +274,7 @@ class UserController extends Controller
             $trx_3 = Transaksi::where('user_id',$auth_id)
                         ->where('status_pemesanan',3)
                         ->orWhere('status_pemesanan',4)
+                        ->orWhere('status_pemesanan',5)
                         ->get();
 
             $cart_3[0][0] = 0;            
@@ -286,7 +288,9 @@ class UserController extends Controller
                             ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
-                            detail_transaksis.`transaksi_id`
+                            detail_transaksis.`transaksi_id`,
+                            status_pemesanan,
+                            transaksis.rating
                         FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
@@ -298,7 +302,7 @@ class UserController extends Controller
             }
 
             $trx_4 = Transaksi::where('user_id',$auth_id)
-                        ->where('status_pemesanan',5)
+                        ->where('status_pemesanan',6)
                         ->get();
 
             $cart_4[0][0] = 0;            
@@ -313,7 +317,7 @@ class UserController extends Controller
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
                             detail_transaksis.`transaksi_id`
-                        FROM detail_transaksis, transaksis, layanan_tersedias, printings
+                        FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
                         AND detail_transaksis.`detail_layanan_id` = detail_layanans.id
@@ -367,11 +371,12 @@ class UserController extends Controller
         $ext =  end($ext);
         $string = str_random(15);
         $nama_file = $string.'_'.$trx_id."_"."bukti".".".$ext;
-        $file->storeAs("uploaded_file/$auth_id/bukti", $nama_file, 'public');
+        $file->storeAs("/storage/uploaded_file/$auth_id/bukti", $nama_file, 'public');
         $path = "storage/uploaded_file/$auth_id/bukti/$nama_file";
 
         $trx = Transaksi::find($trx_id);
         $trx->bukti_pembayaran = $path;
+        $trx->status_pemesanan = 2;
         $trx->save();
         return redirect(route('member.cart', $auth_id));
     }
@@ -391,7 +396,7 @@ class UserController extends Controller
         $rating = $request->rating;
         $trx = Transaksi::find($trx_id);
         $trx->rating = $rating;
-        $trx->status_pemesanan = 4;
+        $trx->status_pemesanan = 5;
         $trx->save();
         $printing_id = $trx->printing_id;
         $printing = Printing::find($printing_id);
@@ -407,6 +412,14 @@ class UserController extends Controller
         }
         $printing->rating = $rating_new;
         $printing->save();
+        return redirect(route('member.cart', $auth_id));
+    }
+
+    public function batal($id)
+    {
+        $auth_id = Auth()->user()->id;
+        $transaksi = Transaksi::find($id);
+        $transaksi->status_pemesanan = 6;
         return redirect(route('member.cart', $auth_id));
     }
 }

@@ -244,7 +244,8 @@ class PrintingController extends Controller
                             ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
-                            detail_transaksis.`transaksi_id`
+                            detail_transaksis.`transaksi_id`,
+                            transaksis.rating
                         FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans,users
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
@@ -257,8 +258,8 @@ class PrintingController extends Controller
             }
 
         $trx_3 = Transaksi::where('printing_id',$auth_id)
-                    ->where('status_pemesanan', '>',2)
-                    ->where('status_pemesanan', '<',5)
+                    ->where('status_pemesanan', '>',3)
+                    ->where('status_pemesanan', '<',6)
                     ->get();
 
         $cart_3[0][0] = 0;            
@@ -273,7 +274,9 @@ class PrintingController extends Controller
                             ukuran_kertas, detail_transaksis.harga,
                             (detail_transaksis.harga * jumlah_halaman * jumlah_cetak) AS total,
                             printings.nama as nama_printing,
-                            detail_transaksis.`transaksi_id`
+                            detail_transaksis.`transaksi_id`,
+                            status_pemesanan,
+                            transaksis.rating
                         FROM detail_transaksis, transaksis, layanan_tersedias, printings, detail_layanans,users
                         WHERE transaksis.id = detail_transaksis.`transaksi_id`
                         AND transaksis.id = $id
@@ -291,7 +294,7 @@ class PrintingController extends Controller
     public function trxSelesai($trx_id)
     {
         $transaksi = Transaksi::find($trx_id);
-        $transaksi->status_pemesanan = 3;
+        $transaksi->status_pemesanan = 4;
         $transaksi->tgl_selesai = NOW();
         $transaksi->save();
         return redirect(route('printing.transaksi'));

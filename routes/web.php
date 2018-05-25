@@ -36,6 +36,7 @@ Route::prefix('admin')->group(function() {
 	Route::get('banned/printing/banned/{id}', 'AdminController@bannedPrinting')->name('admin.banned-printing')->middleware('auth:admin');
 	Route::get('banned/printing/restore/{id}', 'AdminController@restorePrinting')->name('admin.restore-printing')->middleware('auth:admin');
 
+	Route::get('transaksi/history', 'AdminController@getHistoryTrx')->name('admin.getHistoryTrx')->middleware('auth:admin');
 	Route::get('transaksi', 'AdminController@getTransaksi')->name('admin.getTransaksi')->middleware('auth:admin');
 	Route::get('transaksi/{id}', 'AdminController@konfirmasiTrx')->name('admin.konfirmasiTrx')->middleware('auth:admin');
 	Route::get('transaksi/{id}/tolak', 'AdminController@tolakTrx')->name('admin.tolakTrx')->middleware('auth:admin');
@@ -87,6 +88,7 @@ Route::prefix('member')->group(function() {
 	Route::post('/transaksi/bukti/{transaksi_id}', 'UserController@postbukti')->name('member.postbukti')->middleware('auth:web');
 	Route::get('/transaksi/bukti/{transaksi_id}/rating', 'UserController@getrating')->name('member.getrating')->middleware('auth:web');
 	Route::post('/transaksi/bukti/{transaksi_id}/rating', 'UserController@postrating')->name('member.postrating')->middleware('auth:web');
+	Route::get('/transaksi/bukti/{transaksi_id}/batal', 'UserController@batal')->name('member.batal')->middleware('auth:web');
 });
 
 //EVERYONE SIDE//

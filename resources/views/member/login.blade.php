@@ -7,7 +7,9 @@
         	<div class="row">
             	<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                 	<div id="login">
-                    		<div class="text-center"><img src="img/logo_sticky.png" alt="Image" data-retina="true" ></div>
+                    		<div class="text-center">
+                                <h2>Member <span>Login</span></h2>
+                            </div>
                             <hr>
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf

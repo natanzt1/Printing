@@ -141,7 +141,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                        @if($trx0->status_pemesanan == 3)
+                                        @if($trx0->status_pemesanan == 4)
                                             <tr>
                                                 <td><td><td><td>
                                                     <td>
@@ -159,7 +159,7 @@
                                                     </td>   
                                                 </td></td></td></td></td>
                                             </tr>
-                                        @elseif($trx0->status_pemesanan == 4)
+                                        @elseif($trx0->status_pemesanan == 5)
                                             <tr>
                                                 <td><td><td>
                                                     <td>
